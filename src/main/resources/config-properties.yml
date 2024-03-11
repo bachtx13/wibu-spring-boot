@@ -1,0 +1,4 @@
+security-config:
+  token:
+    hash-secret: XBYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYHH
+    validity: 604800
