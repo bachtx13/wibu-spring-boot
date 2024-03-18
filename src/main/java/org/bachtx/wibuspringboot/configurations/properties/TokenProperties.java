@@ -2,7 +2,7 @@ package org.bachtx.wibuspringboot.configurations.properties;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.bachtx.wibuspringboot.core.YamlPropertiesFactory;
+import org.bachtx.wibuspringboot.core.factories.YamlPropertiesFactory;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;

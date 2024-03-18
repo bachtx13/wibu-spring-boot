@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
             tokenRepository.save(userVerifyToken);
         } catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
             log.error(ex.getMessage(), ex.getCause());
-            throw new ServiceErrorException("Entity null", new Throwable("register"));
+            throw new ServiceErrorException("Entity null", ex);
         }
     }
 }
