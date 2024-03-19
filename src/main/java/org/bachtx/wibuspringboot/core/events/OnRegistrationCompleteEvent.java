@@ -3,11 +3,10 @@ package org.bachtx.wibuspringboot.core.events;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import org.bachtx.wibuspringboot.entities.User;
 import org.springframework.context.ApplicationEvent;
 
 import java.io.Serial;
-import java.util.Locale;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -15,14 +14,12 @@ import java.util.Locale;
 public class OnRegistrationCompleteEvent extends ApplicationEvent {
     @Serial
     private static final long serialVersionUID = -5296723820651839538L;
-    private final Locale locale;
-    private final String appUrl;
-    private final User user;
+    private final UUID token;
+    private final String email;
 
-    public OnRegistrationCompleteEvent(User user, Locale locale, String appUrl) {
-        super(user);
-        this.user = user;
-        this.locale = locale;
-        this.appUrl = appUrl;
+    public OnRegistrationCompleteEvent(UUID token, String email) {
+        super(token);
+        this.token = token;
+        this.email = email;
     }
 }

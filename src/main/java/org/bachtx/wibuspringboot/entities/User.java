@@ -19,8 +19,10 @@ import java.util.Set;
 public class User extends BaseEntity {
     @Serial
     private static final long serialVersionUID = -8401153562370158244L;
+    @Column(unique = true)
     private String email;
     private String password;
+    private boolean isVerified = false;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",

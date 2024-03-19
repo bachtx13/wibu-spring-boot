@@ -22,7 +22,6 @@ spring:
         smtp:
           starttls:
             required: true
-          auth: true
   freemarker:
     suffix: ftlh
     template-loader-path: classpath:/templates

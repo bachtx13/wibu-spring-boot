@@ -1,22 +1,21 @@
 package org.bachtx.wibuspringboot.controllers;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.bachtx.wibuspringboot.dtos.request.RegisterRequest;
 import org.bachtx.wibuspringboot.dtos.response.BaseResponse;
+import org.bachtx.wibuspringboot.dtos.response.RegisterResponse;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.UUID;
 
 public interface AuthController {
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "register", method = RequestMethod.POST)
-    BaseResponse<String> register(@Valid RegisterRequest registerRequest);
+    BaseResponse<RegisterResponse> register(@Valid @RequestBody RegisterRequest registerRequest, HttpServletRequest request);
 
     @ResponseStatus(HttpStatus.CREATED)
-    @RequestMapping(value = "confirm-registration/{token}", method = RequestMethod.GET)
-    BaseResponse<String> confirmRegistration(@PathVariable UUID token);
+    @RequestMapping(value = "registration-verify/{token}", method = RequestMethod.GET)
+    BaseResponse<RegisterResponse> confirmRegistration(@PathVariable UUID token);
 }

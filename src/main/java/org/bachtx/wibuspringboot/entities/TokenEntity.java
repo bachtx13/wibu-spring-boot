@@ -5,6 +5,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
+import java.time.Instant;
+import java.util.UUID;
 
 @Entity
 @Table
@@ -17,9 +19,9 @@ import java.io.Serial;
 public class TokenEntity extends BaseEntity {
     @Serial
     private static final long serialVersionUID = 1171405561811958087L;
-    private String token;
-
-    @OneToOne(targetEntity = User.class, fetch = FetchType.EAGER)
+    private UUID token;
+    private Instant expiryDate;
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, name = "user_id")
     private User user;
 }
