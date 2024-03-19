@@ -9,8 +9,6 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
-<<<<<<< HEAD
-=======
   mail:
     host: smtp.gmail.com
     port: 587
@@ -25,4 +23,3 @@ spring:
   freemarker:
     suffix: ftlh
     template-loader-path: classpath:/templates
->>>>>>> f2aebd72a660af84175f3f886bd07e267935f275
