@@ -1,3 +1,6 @@
+server:
+  servlet:
+    context-path: /api/v1
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/wibu_database?createDatabaseIfNotExist=true
@@ -9,6 +12,17 @@ spring:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQL8Dialect
-server:
-  servlet:
-    context-path: /api/v1
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: bachtran10013@gmail.com
+    password: xclu cjlu lzmn toty
+    properties:
+      mail:
+        smtp:
+          starttls:
+            required: true
+          auth: true
+  freemarker:
+    suffix: ftlh
+    template-loader-path: classpath:/templates
