@@ -1,5 +1,6 @@
 package org.bachtx.wibuspringboot.controllers.impl;
 
+import jakarta.annotation.security.PermitAll;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.bachtx.wibuspringboot.controllers.AuthController;
@@ -18,6 +19,7 @@ import java.util.UUID;
 @RequestMapping("auth")
 @AllArgsConstructor
 @CrossOrigin
+@PermitAll
 public class AuthControllerImpl implements AuthController {
     private final AuthService authService;
 
