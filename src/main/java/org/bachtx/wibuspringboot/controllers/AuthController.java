@@ -1,6 +1,7 @@
 package org.bachtx.wibuspringboot.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import org.bachtx.wibuspringboot.dtos.request.LoginRequest;
 import org.bachtx.wibuspringboot.dtos.request.RegisterRequest;
@@ -23,6 +24,6 @@ public interface AuthController {
 
     @ResponseStatus(HttpStatus.OK)
     @RequestMapping(value = "login", method = RequestMethod.POST)
-    BaseResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest);
+    BaseResponse<LoginResponse> login(@Valid @RequestBody LoginRequest loginRequest, HttpServletResponse httpServletResponse);
 
 }

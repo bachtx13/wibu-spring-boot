@@ -1,6 +1,7 @@
 package org.bachtx.wibuspringboot.controllers.impl;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import org.bachtx.wibuspringboot.controllers.AuthController;
 import org.bachtx.wibuspringboot.dtos.request.LoginRequest;
@@ -44,8 +45,9 @@ public class AuthControllerImpl implements AuthController {
     }
 
     @Override
-    public BaseResponse<LoginResponse> login(LoginRequest loginRequest) {
+    public BaseResponse<LoginResponse> login(LoginRequest loginRequest, HttpServletResponse httpServletResponse) {
         LoginResponse response = authService.login(loginRequest);
+        httpServletResponse.addHeader("Authorization", response.getToken());
         return BaseResponse.<LoginResponse>builder()
                 .data(response)
                 .message("Login successfully")

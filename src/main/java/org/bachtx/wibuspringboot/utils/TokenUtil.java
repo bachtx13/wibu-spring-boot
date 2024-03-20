@@ -4,6 +4,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.bachtx.wibuspringboot.configurations.properties.TokenProperties;
+import org.bachtx.wibuspringboot.constants.SecurityConstant;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -29,11 +30,11 @@ public class TokenUtil {
     }
 
     private Claims getAllClaimsFromToken(String token) {
-        return Jwts.parser().verifyWith(key).build().parseSignedClaims(token).getPayload();
+        return Jwts.parser().verifyWith(key).build().parseSignedClaims(extractToken(token)).getPayload();
     }
 
     private <T> T getClaimFromToken(String token, Function<Claims, T> claimsTFunction) {
-        return claimsTFunction.apply(getAllClaimsFromToken(token));
+        return claimsTFunction.apply(getAllClaimsFromToken(extractToken(token)));
     }
 
     public String getUsernameFromToken(String token) {
@@ -46,7 +47,7 @@ public class TokenUtil {
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().verifyWith(key).build().parse(token);
+            Jwts.parser().verifyWith(key).build().parse(extractToken(token));
             return true;
         } catch (MalformedJwtException ex) {
             logger.error("Token invalid");
@@ -73,5 +74,12 @@ public class TokenUtil {
                 .expiration(new Date(System.currentTimeMillis() + this.tokenProperties.getValidity() * 1000))
                 .signWith(key)
                 .compact();
+    }
+
+    private String extractToken(String token) {
+        if (token.startsWith(SecurityConstant.TOKEN_PREFIX)) {
+            return token.substring(7);
+        }
+        return token;
     }
 }

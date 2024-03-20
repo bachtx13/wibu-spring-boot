@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bachtx.wibuspringboot.constants.SecurityConstant;
 import org.bachtx.wibuspringboot.entities.UserPrincipal;
 import org.bachtx.wibuspringboot.utils.TokenUtil;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,7 +29,7 @@ public class AuthFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         try {
-            String authHeaderToken = request.getHeader("Authorization");
+            String authHeaderToken = request.getHeader(SecurityConstant.AUTHORIZATION);
             if (StringUtils.hasText(authHeaderToken) && tokenUtil.validateToken(authHeaderToken)) {
                 String username = tokenUtil.getUsernameFromToken(authHeaderToken);
                 if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {

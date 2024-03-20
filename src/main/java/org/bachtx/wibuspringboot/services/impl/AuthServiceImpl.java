@@ -2,6 +2,7 @@ package org.bachtx.wibuspringboot.services.impl;
 
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.bachtx.wibuspringboot.constants.SecurityConstant;
 import org.bachtx.wibuspringboot.core.events.OnRegistrationCompleteEvent;
 import org.bachtx.wibuspringboot.dtos.request.LoginRequest;
 import org.bachtx.wibuspringboot.dtos.request.RegisterRequest;
@@ -10,6 +11,7 @@ import org.bachtx.wibuspringboot.dtos.response.RegisterResponse;
 import org.bachtx.wibuspringboot.entities.TokenEntity;
 import org.bachtx.wibuspringboot.entities.User;
 import org.bachtx.wibuspringboot.exceptions.EmailAlreadyExistsException;
+import org.bachtx.wibuspringboot.exceptions.PasswordNotMatchException;
 import org.bachtx.wibuspringboot.exceptions.RegistrationVerifyErrorException;
 import org.bachtx.wibuspringboot.exceptions.ServiceErrorException;
 import org.bachtx.wibuspringboot.mappers.UserMapper;
@@ -20,6 +22,7 @@ import org.bachtx.wibuspringboot.utils.TokenUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -33,6 +36,7 @@ public class AuthServiceImpl implements AuthService {
     private final UserRepository userRepository;
     private final TokenRepository tokenRepository;
     private final UserMapper userMapper = UserMapper.INSTANCE;
+    private final PasswordEncoder passwordEncoder;
     private final TokenUtil tokenUtil;
 
     private final ApplicationEventPublisher applicationEventPublisher;
@@ -52,6 +56,7 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 user = foundUser;
             }
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             TokenEntity userVerifyToken = tokenRepository.findByUser(user);
             if (userVerifyToken == null) {
                 userVerifyToken = TokenEntity.builder()
@@ -102,10 +107,17 @@ public class AuthServiceImpl implements AuthService {
         try {
             User user = userRepository.findByEmail(loginRequest.getEmail())
                     .orElseThrow(() -> new UsernameNotFoundException("Email not found", new Throwable(loginRequest.getEmail())));
-        } catch (IllegalArgumentException ex) {
+            if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+                throw new PasswordNotMatchException("Password not match", new Throwable(loginRequest.getEmail()));
+            }
+            String token = SecurityConstant.TOKEN_PREFIX + tokenUtil.generateToken(user.getEmail());
+            return LoginResponse.builder()
+                    .email(user.getEmail())
+                    .token(token)
+                    .build();
+        } catch (IllegalArgumentException | OptimisticLockingFailureException ex) {
             log.error(ex.getMessage(), ex.getCause());
             throw new ServiceErrorException("Entity null", ex);
         }
-        return null;
     }
 }
