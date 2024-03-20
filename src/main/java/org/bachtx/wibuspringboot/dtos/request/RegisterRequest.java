@@ -16,7 +16,7 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 @FieldsMatch(field = "password", fieldMatch = "confirmationPassword", message = "Password muss match")
 public class RegisterRequest {
-    @Email
+    @Email(message = "Please enter a correct email")
     private String email;
     @ValidPassword(message = "Password must be at least 8 characters long and contain a combination of letters, numbers, and special characters")
     private String password;

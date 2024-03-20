@@ -3,7 +3,9 @@ package org.bachtx.wibuspringboot.services.impl;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.bachtx.wibuspringboot.core.events.OnRegistrationCompleteEvent;
+import org.bachtx.wibuspringboot.dtos.request.LoginRequest;
 import org.bachtx.wibuspringboot.dtos.request.RegisterRequest;
+import org.bachtx.wibuspringboot.dtos.response.LoginResponse;
 import org.bachtx.wibuspringboot.dtos.response.RegisterResponse;
 import org.bachtx.wibuspringboot.entities.TokenEntity;
 import org.bachtx.wibuspringboot.entities.User;
@@ -17,6 +19,7 @@ import org.bachtx.wibuspringboot.services.AuthService;
 import org.bachtx.wibuspringboot.utils.TokenUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -91,5 +94,18 @@ public class AuthServiceImpl implements AuthService {
             log.error(ex.getMessage(), ex.getCause());
             throw new ServiceErrorException("Entity null", ex);
         }
+    }
+
+    @Override
+    public LoginResponse login(LoginRequest loginRequest) {
+        log.trace("user login");
+        try {
+            User user = userRepository.findByEmail(loginRequest.getEmail())
+                    .orElseThrow(() -> new UsernameNotFoundException("Email not found", new Throwable(loginRequest.getEmail())));
+        } catch (IllegalArgumentException ex) {
+            log.error(ex.getMessage(), ex.getCause());
+            throw new ServiceErrorException("Entity null", ex);
+        }
+        return null;
     }
 }

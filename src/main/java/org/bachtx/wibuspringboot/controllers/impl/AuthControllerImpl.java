@@ -3,8 +3,10 @@ package org.bachtx.wibuspringboot.controllers.impl;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.bachtx.wibuspringboot.controllers.AuthController;
+import org.bachtx.wibuspringboot.dtos.request.LoginRequest;
 import org.bachtx.wibuspringboot.dtos.request.RegisterRequest;
 import org.bachtx.wibuspringboot.dtos.response.BaseResponse;
+import org.bachtx.wibuspringboot.dtos.response.LoginResponse;
 import org.bachtx.wibuspringboot.dtos.response.RegisterResponse;
 import org.bachtx.wibuspringboot.enums.EResponseStatus;
 import org.bachtx.wibuspringboot.services.AuthService;
@@ -37,6 +39,16 @@ public class AuthControllerImpl implements AuthController {
         return BaseResponse.<RegisterResponse>builder()
                 .data(response)
                 .message("Verify successfully")
+                .status(EResponseStatus.SUCCESS)
+                .build();
+    }
+
+    @Override
+    public BaseResponse<LoginResponse> login(LoginRequest loginRequest) {
+        LoginResponse response = authService.login(loginRequest);
+        return BaseResponse.<LoginResponse>builder()
+                .data(response)
+                .message("Login successfully")
                 .status(EResponseStatus.SUCCESS)
                 .build();
     }
