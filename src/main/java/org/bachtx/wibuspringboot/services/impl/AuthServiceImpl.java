@@ -18,9 +18,9 @@ import org.bachtx.wibuspringboot.repositories.RoleRepository;
 import org.bachtx.wibuspringboot.repositories.TokenRepository;
 import org.bachtx.wibuspringboot.repositories.UserRepository;
 import org.bachtx.wibuspringboot.services.AuthService;
-import org.bachtx.wibuspringboot.utils.TokenUtil;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -37,7 +37,7 @@ public class AuthServiceImpl implements AuthService {
     private final TokenRepository tokenRepository;
     private final RoleRepository roleRepository;
     private final UserMapper userMapper = UserMapper.INSTANCE;
-    private final TokenUtil tokenUtil;
+    private final PasswordEncoder passwordEncoder;
 
     private final ApplicationEventPublisher applicationEventPublisher;
 
@@ -56,6 +56,7 @@ public class AuthServiceImpl implements AuthService {
             } else {
                 user = foundUser;
             }
+            user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
             TokenEntity userVerifyToken = tokenRepository.findByUser(user);
             if (userVerifyToken == null) {
                 userVerifyToken = TokenEntity.builder()
