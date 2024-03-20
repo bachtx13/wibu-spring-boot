@@ -48,6 +48,7 @@ public class MailSenderServiceImpl implements MailSenderService {
         mimeMessageHelper.setTo(sendTo);
         mimeMessageHelper.setSubject(subject);
         mimeMessageHelper.setText(htmlBody, true);
+        System.out.println("here");
         javaMailSender.send(message);
     }
 

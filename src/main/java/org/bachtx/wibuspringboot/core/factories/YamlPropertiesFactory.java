@@ -1,4 +1,4 @@
-package org.bachtx.wibuspringboot.core;
+package org.bachtx.wibuspringboot.core.factories;
 
 import org.springframework.beans.factory.config.YamlPropertiesFactoryBean;
 import org.springframework.core.env.PropertiesPropertySource;
