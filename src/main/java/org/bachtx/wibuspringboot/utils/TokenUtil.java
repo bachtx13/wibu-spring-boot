@@ -2,7 +2,7 @@ package org.bachtx.wibuspringboot.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bachtx.wibuspringboot.configurations.properties.TokenProperties;
 import org.bachtx.wibuspringboot.constants.SecurityConstant;
 import org.slf4j.Logger;
@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-@Slf4j
+@Log4j2
 @Component
 public class TokenUtil {
     private static final Logger logger = LoggerFactory.getLogger(TokenUtil.class);

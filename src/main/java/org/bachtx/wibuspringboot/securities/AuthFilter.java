@@ -5,7 +5,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bachtx.wibuspringboot.constants.SecurityConstant;
 import org.bachtx.wibuspringboot.entities.UserPrincipal;
 import org.bachtx.wibuspringboot.utils.TokenUtil;
@@ -14,12 +14,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-@Slf4j
+@Log4j2
 @AllArgsConstructor
 @Component
 public class AuthFilter extends OncePerRequestFilter {
@@ -46,5 +50,12 @@ public class AuthFilter extends OncePerRequestFilter {
             log.error(ex.getMessage());
             throw ex;
         }
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        Set<String> skipUrls = new HashSet<>(List.of("/auth/**"));
+        AntPathMatcher pathMatcher = new AntPathMatcher();
+        return skipUrls.stream().anyMatch(p -> pathMatcher.match(p, request.getServletPath()));
     }
 }

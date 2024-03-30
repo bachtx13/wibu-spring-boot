@@ -29,7 +29,7 @@ public class AuthControllerImpl implements AuthController {
         RegisterResponse response = authService.register(registerRequest);
         return BaseResponse.<RegisterResponse>builder()
                 .data(response)
-                .message("Register successfully")
+                .message("Register successfully, please check your email")
                 .status(EResponseStatus.SUCCESS)
                 .build();
     }

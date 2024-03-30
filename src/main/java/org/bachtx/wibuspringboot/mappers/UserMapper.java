@@ -2,6 +2,7 @@ package org.bachtx.wibuspringboot.mappers;
 
 import org.bachtx.wibuspringboot.dtos.request.RegisterRequest;
 import org.bachtx.wibuspringboot.dtos.response.RegisterResponse;
+import org.bachtx.wibuspringboot.dtos.response.UserInfoResponse;
 import org.bachtx.wibuspringboot.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mappings;
@@ -16,4 +17,7 @@ public interface UserMapper {
 
     @Mappings({})
     RegisterResponse userToRegisterResponse(User user);
+
+    @Mappings({})
+    UserInfoResponse userToUserInfoResponse(User user);
 }

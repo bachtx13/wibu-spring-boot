@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.bachtx.wibuspringboot.enums.EResponseStatus;
 
+import java.util.List;
+
 @Builder
 @Getter
 @Setter
@@ -13,6 +15,6 @@ import org.bachtx.wibuspringboot.enums.EResponseStatus;
 public class BaseResponse<D> {
     private String message;
     private D data;
-    private D error;
+    private List<ErrorResponse> errors;
     private EResponseStatus status;
 }
