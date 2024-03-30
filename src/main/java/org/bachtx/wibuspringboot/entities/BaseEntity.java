@@ -1,10 +1,7 @@
 package org.bachtx.wibuspringboot.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.io.Serial;
@@ -19,6 +16,7 @@ import java.util.UUID;
 @Setter
 @MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@EqualsAndHashCode(of = {"id"})
 public abstract class BaseEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = -8868877885520192939L;

@@ -1,7 +1,7 @@
 package org.bachtx.wibuspringboot.services.impl;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bachtx.wibuspringboot.entities.User;
 import org.bachtx.wibuspringboot.entities.UserPrincipal;
 import org.bachtx.wibuspringboot.repositories.UserRepository;
@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-@Slf4j
+@Log4j2
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
 

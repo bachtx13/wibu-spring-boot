@@ -5,7 +5,7 @@ import freemarker.template.TemplateException;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 import org.bachtx.wibuspringboot.services.MailSenderService;
 import org.bachtx.wibuspringboot.utils.HashMapUtil;
 import org.springframework.mail.SimpleMailMessage;
@@ -19,7 +19,7 @@ import java.util.Map;
 
 @Service
 @AllArgsConstructor
-@Slf4j
+@Log4j2
 public class MailSenderServiceImpl implements MailSenderService {
     private final JavaMailSender javaMailSender;
     private final Configuration freemarkerConfiguration;
@@ -32,11 +32,13 @@ public class MailSenderServiceImpl implements MailSenderService {
 
     @Override
     public void sendMessageWithFreemarkerTemplate(String sendTo, String subject, String templateName, Object templateDataObject) {
+        log.debug("start send email");
         Map<String, Object> templateData = hashMapUtil.objectToHashMap(templateDataObject);
         StringWriter htmlTemplate = new StringWriter();
         try {
             freemarkerConfiguration.getTemplate(templateName + ".ftlh").process(templateData, htmlTemplate);
             sendHtmlMessage(sendTo, subject, htmlTemplate.toString());
+            log.debug("end send email");
         } catch (TemplateException | IOException | MessagingException e) {
             log.error(e.getMessage(), e);
         }

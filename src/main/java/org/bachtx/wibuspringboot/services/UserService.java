@@ -1,7 +1,8 @@
 package org.bachtx.wibuspringboot.services;
 
-import org.bachtx.wibuspringboot.entities.User;
+import org.bachtx.wibuspringboot.dtos.response.UserInfoResponse;
 
 public interface UserService {
-    User findByEmail(String email);
+    UserInfoResponse getUserInfo();
+
 }
