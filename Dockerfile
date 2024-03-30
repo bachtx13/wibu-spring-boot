@@ -8,8 +8,7 @@ RUN mvn clean install
 #
 # Package stage
 #
-FROM openjdk:17-oracle
-
+FROM eclipse-temurin:17-jdk
 COPY --from=build /target/demo-0.0.1-SNAPSHOT.jar demo.jar
 # ENV PORT=8080
 EXPOSE 8080
