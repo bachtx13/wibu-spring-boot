@@ -12,4 +12,4 @@ FROM eclipse-temurin:17-jdk
 COPY --from=build /target/wibu-spring-boot-0.0.1-SNAPSHOT.jar wibu-spring-boot.jar
 # ENV PORT=8080
 EXPOSE 8080
-ENTRYPOINT ["java","-jar","wibu-spring-boot.jar"]
+ENTRYPOINT ["java","-jar", "-Dspring.profiles.active=prod","wibu-spring-boot.jar"]
