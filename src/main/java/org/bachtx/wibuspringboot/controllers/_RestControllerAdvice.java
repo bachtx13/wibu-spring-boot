@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.util.List;
 
@@ -135,6 +136,18 @@ public class _RestControllerAdvice {
                                 .target("access")
                                 .build())
                 )
+                .message(ex.getMessage())
+                .status(EResponseStatus.FAIL)
+                .build();
+    }
+
+    @ExceptionHandler({
+            MaxUploadSizeExceededException.class,
+            UploadFileException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public BaseResponse<?> handleMaxUploadSizeExceededException(RuntimeException ex) {
+        return BaseResponse.builder()
                 .message(ex.getMessage())
                 .status(EResponseStatus.FAIL)
                 .build();

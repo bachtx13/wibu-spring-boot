@@ -3,3 +3,5 @@ spring:
     name: Wibu API application
   profiles:
     active: dev
+  mail:
+    default-encoding: UTF-8
