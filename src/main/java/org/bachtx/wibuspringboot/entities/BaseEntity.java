@@ -15,7 +15,6 @@ import java.util.UUID;
 @Getter
 @Setter
 @MappedSuperclass
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @EqualsAndHashCode(of = {"id"})
 public abstract class BaseEntity implements Serializable {
     @Serial

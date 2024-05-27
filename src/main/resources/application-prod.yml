@@ -10,10 +10,9 @@ spring:
     password: AVNS_7eRNZl-OWS6tAoNVudV
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    show-sql: true
     hibernate:
       ddl-auto: update
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
   mail:
     host: smtp.gmail.com
     port: 587

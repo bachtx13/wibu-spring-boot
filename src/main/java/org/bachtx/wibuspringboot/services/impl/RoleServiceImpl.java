@@ -21,7 +21,7 @@ public class RoleServiceImpl implements RoleService {
         if (count() == 0) {
             Set<Role> roles = Arrays.stream(EUserRole.values())
                     .map(r -> Role.builder()
-                            .name(r.getRoleName())
+                            .name(r)
                             .build())
                     .collect(Collectors.toSet());
             roleRepository.saveAll(roles);
