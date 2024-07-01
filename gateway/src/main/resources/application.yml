@@ -1,0 +1,32 @@
+server:
+  port: 8763
+spring:
+  application:
+    name: gateway
+  cloud:
+    inetutils:
+      timeout-seconds: 5
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: true
+  datasource:
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/ncc_checkin_db
+    username: postgres
+    password:
+  main:
+    web-application-type: reactive
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+management:
+  endpoint:
+    gateway:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: gateway

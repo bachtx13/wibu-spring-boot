@@ -1,0 +1,18 @@
+server:
+  port: 8762
+spring:
+  application:
+    name: configuration-server
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/configs/dev
+  profiles:
+    active: native
+eureka:
+  client:
+    service-url:
+      default-zone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
