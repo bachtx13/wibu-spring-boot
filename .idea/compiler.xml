@@ -12,7 +12,9 @@
         <module name="auth-service" />
         <module name="discovery-server" />
         <module name="message-system-server" />
+        <module name="gallery-service" />
         <module name="configuration-server" />
+        <module name="manga-service" />
         <module name="gateway" />
       </profile>
     </annotationProcessing>
@@ -22,8 +24,10 @@
       <module name="auth-service" options="-parameters" />
       <module name="configuration-server" options="-parameters" />
       <module name="discovery-server" options="-parameters" />
+      <module name="gallery-service" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="mail-sender-service" options="-parameters" />
+      <module name="manga-service" options="-parameters" />
       <module name="message-system-server" options="-parameters" />
     </option>
   </component>

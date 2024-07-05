@@ -2,7 +2,6 @@ package com.bachtx.mailsenderservice.services.impl;
 
 import com.bachtx.mailsenderservice.exceptions.SendTemplateMailFailException;
 import com.bachtx.mailsenderservice.services.IMailSenderService;
-import com.bachtx.wibucommon.utils.HashMapUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import freemarker.template.Configuration;
@@ -35,7 +34,6 @@ public class MailSenderServiceImpl implements IMailSenderService {
     @Override
     public void sendMessageWithFreemarkerTemplate(String sendTo, String subject, String templateName, Object templateDataObject) {
         log.debug("start send email");
-        HashMapUtil hashMapUtil = new HashMapUtil();
         StringWriter htmlTemplate = new StringWriter();
         Gson gson = new Gson();
         try {

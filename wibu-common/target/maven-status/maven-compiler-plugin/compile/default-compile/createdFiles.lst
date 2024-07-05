@@ -1,4 +1,5 @@
 com\bachtx\wibucommon\exceptions\ServiceErrorException.class
+com\bachtx\wibucommon\utils\FileUtil.class
 com\bachtx\wibucommon\dtos\response\ErrorResponse.class
 com\bachtx\wibucommon\factories\YamlPropertiesFactory.class
 com\bachtx\wibucommon\dtos\response\ResponseTemplate$ResponseTemplateBuilder.class

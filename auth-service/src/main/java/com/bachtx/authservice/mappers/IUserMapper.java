@@ -1,9 +1,11 @@
 package com.bachtx.authservice.mappers;
 
 import com.bachtx.authservice.dtos.payloads.RegisterPayload;
-import com.bachtx.authservice.dtos.requests.RegisterResponse;
+import com.bachtx.authservice.dtos.responses.RegisterResponse;
+import com.bachtx.authservice.dtos.responses.UserInfoResponse;
 import com.bachtx.authservice.entities.User;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
@@ -17,6 +19,8 @@ public interface IUserMapper {
     @Mappings({})
     RegisterResponse userToRegisterResponse(User user);
 
-//    @Mappings({})
-//    UserInfoResponse userToUserInfoResponse(User user);
+    @Mappings({
+            @Mapping(target = "roles", ignore = true)
+    })
+    UserInfoResponse userToUserInfoResponse(User user);
 }

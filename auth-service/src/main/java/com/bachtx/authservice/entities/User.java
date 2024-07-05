@@ -17,7 +17,10 @@ import java.util.Set;
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
 public class User extends EntityTemplate {
+    @Column(unique = true, nullable = false)
     private String email;
+    private String username;
+    @Column(unique = true, nullable = false)
     private String password;
     private boolean verified;
     @ManyToMany(fetch = FetchType.EAGER)
@@ -27,4 +30,7 @@ public class User extends EntityTemplate {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles = new HashSet<>();
+
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private TokenHolder tokenHolder;
 }

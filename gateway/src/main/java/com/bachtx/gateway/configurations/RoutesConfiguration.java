@@ -15,6 +15,11 @@ public class RoutesConfiguration {
                                 .filters(gatewayFilterSpec ->
                                         gatewayFilterSpec.stripPrefix(1))
                                 .uri("lb://auth-service"))
+                .route("gallery", (r) ->
+                        r.path("/gallery/**")
+                                .filters(gatewayFilterSpec ->
+                                        gatewayFilterSpec.stripPrefix(1))
+                                .uri("lb://gallery-service"))
                 .build();
     }
 }

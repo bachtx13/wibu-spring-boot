@@ -11,6 +11,8 @@
         <option value="$PROJECT_DIR$/configuration-server/pom.xml" />
         <option value="$PROJECT_DIR$/mail-sender-service/pom.xml" />
         <option value="$PROJECT_DIR$/message-system-server/pom.xml" />
+        <option value="$PROJECT_DIR$/gallery-service/pom.xml" />
+        <option value="$PROJECT_DIR$/manga-service/pom.xml" />
       </list>
     </option>
   </component>

@@ -3,25 +3,10 @@ server:
 spring:
   application:
     name: auth-service
-  #  datasource:
-  #    driverClassName: org.postgresql.Driver
-  #    url: jdbc:postgresql://localhost:5432/manga_db
-  #    username: postgres
-  #    password:
   jpa:
     hibernate:
       ddl-auto: update
     database-platform: org.hibernate.dialect.PostgreSQLDialect
-#  cloud:
-#    config:
-#      profile: default
-#      name: config-properties
-#      discovery:
-#        enabled: true
-#        service-id: configuration-server
-#  cloud:
-#    config:
-#      name:
 eureka:
   client:
     service-url:

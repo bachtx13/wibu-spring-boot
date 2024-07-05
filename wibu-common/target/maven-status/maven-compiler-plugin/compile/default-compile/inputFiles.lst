@@ -7,5 +7,6 @@ D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\enums
 D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\exceptions\InvalidTokenException.java
 D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\exceptions\ServiceErrorException.java
 D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\factories\YamlPropertiesFactory.java
+D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\utils\FileUtil.java
 D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\utils\HashMapUtil.java
 D:\learning\wibu-spring-ms\wibu-common\src\main\java\com\bachtx\wibucommon\utils\JwtUtil.java

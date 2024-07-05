@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    config:
+      profile: default
+      discovery:
+        enabled: true
+        service-id: configuration-server
+      name: gallery

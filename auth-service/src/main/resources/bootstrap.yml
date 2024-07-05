@@ -5,4 +5,4 @@ spring:
       discovery:
         enabled: true
         service-id: configuration-server
-      name: jwt-token-config, datasource-config
+      name: auth, datasource, kafka

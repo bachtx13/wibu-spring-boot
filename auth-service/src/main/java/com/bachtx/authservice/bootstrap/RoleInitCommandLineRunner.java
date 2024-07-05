@@ -1,6 +1,7 @@
 package com.bachtx.authservice.bootstrap;
 
-import com.bachtx.authservice.services.impl.RoleServiceImpl;
+import com.bachtx.authservice.services.IRoleService;
+import com.bachtx.authservice.services.IUserService;
 import lombok.AllArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -8,10 +9,12 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class RoleInitCommandLineRunner implements CommandLineRunner {
-    private final RoleServiceImpl roleService;
+    private final IRoleService roleService;
+    private final IUserService userService;
 
     @Override
     public void run(String... args) {
         roleService.init();
+        userService.initAdminUser();
     }
 }

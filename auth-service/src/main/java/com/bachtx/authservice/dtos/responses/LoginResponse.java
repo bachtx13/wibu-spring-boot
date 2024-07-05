@@ -1,4 +1,4 @@
-package com.bachtx.authservice.dtos.requests;
+package com.bachtx.authservice.dtos.responses;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

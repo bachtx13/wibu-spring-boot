@@ -3,16 +3,3 @@ server:
 spring:
   application:
     name: mail-sender-service
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: bachtran10013@gmail.com
-    password: xclu cjlu lzmn toty
-    properties:
-      mail:
-        smtp:
-          starttls:
-            required: true
-  freemarker:
-    suffix: ftlh
-    template-loader-path: classpath:/templates
