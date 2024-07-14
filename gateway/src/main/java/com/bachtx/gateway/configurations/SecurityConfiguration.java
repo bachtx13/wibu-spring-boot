@@ -53,18 +53,4 @@ public class SecurityConfiguration {
                 )
                 .build();
     }
-
-    @Bean
-    CorsWebFilter corsWebFilter() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowCredentials(false);
-        configuration.setAllowPrivateNetwork(false);
-        configuration.setAllowedOrigins(List.of("*"));
-        configuration.setAllowedMethods(List.of("HEAD",
-                "GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
-        configuration.setAllowedHeaders(List.of("*"));
-        final UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
-        return new CorsWebFilter(source);
-    }
 }

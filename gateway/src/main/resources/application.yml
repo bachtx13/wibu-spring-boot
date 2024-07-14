@@ -11,6 +11,12 @@ spring:
         locator:
           lower-case-service-id: true
           enabled: true
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowed-origins: "http://localhost:4200"
+            allowed-headers: "*"
+            allowed-methods: "*"
   main:
     web-application-type: reactive
 eureka:
