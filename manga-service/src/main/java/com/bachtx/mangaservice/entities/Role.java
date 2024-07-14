@@ -1,4 +1,4 @@
-package com.bachtx.authservice.entities;
+package com.bachtx.mangaservice.entities;
 
 import com.bachtx.wibucommon.entities.EntityTemplate;
 import com.bachtx.wibucommon.enums.EUserRole;

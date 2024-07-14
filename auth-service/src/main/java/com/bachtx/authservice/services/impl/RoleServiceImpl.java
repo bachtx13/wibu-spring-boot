@@ -1,9 +1,9 @@
 package com.bachtx.authservice.services.impl;
 
 import com.bachtx.authservice.entities.Role;
-import com.bachtx.authservice.enums.EUserRole;
 import com.bachtx.authservice.repositories.IRoleRepository;
 import com.bachtx.authservice.services.IRoleService;
+import com.bachtx.wibucommon.enums.EUserRole;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

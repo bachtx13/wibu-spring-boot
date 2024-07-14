@@ -20,6 +20,11 @@ public class RoutesConfiguration {
                                 .filters(gatewayFilterSpec ->
                                         gatewayFilterSpec.stripPrefix(1))
                                 .uri("lb://gallery-service"))
+                .route("manga", (r) ->
+                        r.path("/manga/**")
+                                .filters(gatewayFilterSpec ->
+                                        gatewayFilterSpec.stripPrefix(1))
+                                .uri("lb://manga-service"))
                 .build();
     }
 }

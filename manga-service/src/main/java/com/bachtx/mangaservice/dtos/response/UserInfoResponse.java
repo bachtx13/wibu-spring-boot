@@ -1,4 +1,4 @@
-package com.bachtx.authservice.dtos.responses;
+package com.bachtx.mangaservice.dtos.response;
 
 import com.bachtx.wibucommon.enums.EUserRole;
 import lombok.*;

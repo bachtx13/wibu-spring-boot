@@ -20,6 +20,8 @@ public class EntityTemplate {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+    @Column(columnDefinition = "boolean default false")
+    private boolean disabled = false;
     private Instant createdDate;
     private Instant lastUpdated;
 

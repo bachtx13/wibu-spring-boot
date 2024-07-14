@@ -9,6 +9,7 @@ import com.bachtx.wibucommon.enums.EResponseStatus;
 import com.bachtx.wibucommon.exceptions.ServiceErrorException;
 import org.hibernate.validator.internal.engine.ConstraintViolationImpl;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -120,6 +121,22 @@ public class _RestControllerAdvice {
         return ResponseTemplate.builder()
                 .errors(
                         List.of(_extractErrorFromException(ex, null))
+                )
+                .message(ex.getMessage())
+                .status(EResponseStatus.ERROR)
+                .build();
+    }
+
+
+    @ExceptionHandler({
+            HttpMessageNotReadableException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseTemplate<?> handleHttpMessageNotReadableException(
+            HttpMessageNotReadableException ex) {
+        return ResponseTemplate.builder()
+                .errors(
+                        List.of(_extractErrorFromException(ex, "request"))
                 )
                 .message(ex.getMessage())
                 .status(EResponseStatus.ERROR)

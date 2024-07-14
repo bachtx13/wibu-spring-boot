@@ -16,12 +16,16 @@ import java.util.List;
 @EqualsAndHashCode(callSuper = false)
 public class Manga extends EntityTemplate {
     private String title;
+    private String thumbnailUrl;
+    private String description;
+    @ManyToOne
+    @JoinColumn(name = "publisher_id")
+    private User publisher;
     @ManyToMany
     @JoinTable(name = "manga_author",
             joinColumns = @JoinColumn(name = "manga_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
-    private String description;
     @OneToMany(mappedBy = "manga", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Chapter> chapters;
     @ManyToMany(fetch = FetchType.LAZY)

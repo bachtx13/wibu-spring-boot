@@ -12,8 +12,8 @@ import org.springframework.validation.annotation.Validated;
 @AllArgsConstructor
 @Getter
 @Setter
-public class CreateGenrePayload {
+public class UpdateGenrePayload {
     @NotEmpty
     private String title;
-    private String thumbnail;
+    private String thumbnailUrl;
 }

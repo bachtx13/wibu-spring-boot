@@ -1,10 +1,11 @@
-package com.bachtx.authservice.entities;
+package com.bachtx.mangaservice.entities;
 
 import com.bachtx.wibucommon.entities.EntityTemplate;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -19,8 +20,6 @@ public class User extends EntityTemplate {
     @Column(unique = true, nullable = false)
     private String email;
     private String username;
-    @Column(unique = true, nullable = false)
-    private String password;
     private boolean verified;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
@@ -29,7 +28,6 @@ public class User extends EntityTemplate {
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
     private Set<Role> roles;
-
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private TokenHolder tokenHolder;
+    @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Manga> mangas;
 }

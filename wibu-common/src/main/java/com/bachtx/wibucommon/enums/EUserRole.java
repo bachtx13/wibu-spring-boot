@@ -1,4 +1,4 @@
-package com.bachtx.authservice.enums;
+package com.bachtx.wibucommon.enums;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

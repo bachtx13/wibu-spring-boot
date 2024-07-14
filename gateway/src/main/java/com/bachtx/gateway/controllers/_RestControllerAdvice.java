@@ -1,17 +1,16 @@
-package com.bachtx.galleryservice.controllers;
+package com.bachtx.gateway.controllers;
 
-import com.bachtx.galleryservice.exceptions.UploadFileException;
 import com.bachtx.wibucommon.dtos.response.ErrorResponse;
 import com.bachtx.wibucommon.dtos.response.ResponseTemplate;
 import com.bachtx.wibucommon.enums.EResponseStatus;
-import com.bachtx.wibucommon.exceptions.ServiceErrorException;
+import org.springframework.cloud.gateway.support.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+import org.springframework.web.reactive.resource.NoResourceFoundException;
 
 import java.util.List;
 import java.util.Objects;
@@ -19,51 +18,28 @@ import java.util.Objects;
 @RestControllerAdvice
 public class _RestControllerAdvice {
     @ExceptionHandler({
-            ServiceErrorException.class
+            NoResourceFoundException.class
     })
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseTemplate<?> handleServiceErrorException(RuntimeException ex) {
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseTemplate<?> handleNoResourceFoundException(NoResourceFoundException ex) {
         return ResponseTemplate.builder()
                 .errors(
-                        List.of(_extractErrorFromException(ex, "server"))
-                )
-                .message(ex.getMessage())
-                .status(EResponseStatus.ERROR)
-                .build();
-    }
-
-    @ExceptionHandler({
-            UploadFileException.class
-    })
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseTemplate<?> handleUploadFileException(UploadFileException ex) {
-        return ResponseTemplate.builder()
-                .errors(
-                        List.of(_extractErrorFromException(ex, "request"))
+                        List.of(_extractErrorFromException(ex, "gateway"))
                 )
                 .message(ex.getMessage())
                 .status(EResponseStatus.FAIL)
                 .build();
     }
 
-    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    public ResponseTemplate<?> handleMethodArgumentTypeMismatchException(MethodArgumentTypeMismatchException ex) {
+    @ExceptionHandler({
+            NotFoundException.class
+    })
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public ResponseTemplate<?> handleNoNotFoundException(
+            NotFoundException ex) {
         return ResponseTemplate.builder()
                 .errors(
-                        List.of(_extractErrorFromException(ex, "request"))
-                )
-                .message(ex.getMessage())
-                .status(EResponseStatus.ERROR)
-                .build();
-    }
-
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ResponseTemplate<?> handleException(Exception ex) {
-        return ResponseTemplate.builder()
-                .errors(
-                        List.of(_extractErrorFromException(ex, null))
+                        List.of(_extractErrorFromException(ex, "gateway"))
                 )
                 .message(ex.getMessage())
                 .status(EResponseStatus.ERROR)
