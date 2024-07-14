@@ -70,6 +70,7 @@ public class UserServiceImpl implements IUserService {
         String token = jwtUtil.generateToken(user.getEmail());
         return LoginResponse.builder()
                 .token(token)
+                .expires(jwtUtil.getExpirationDateFromToken(token))
                 .build();
     }
 

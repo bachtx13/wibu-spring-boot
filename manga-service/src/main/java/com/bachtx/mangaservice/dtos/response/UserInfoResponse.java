@@ -16,6 +16,7 @@ public class UserInfoResponse {
     private String email;
     private String username;
     private List<EUserRole> roles;
+    private List<MangaResponse> mangas;
     private Instant createdDate;
     private Instant lastUpdated;
 }

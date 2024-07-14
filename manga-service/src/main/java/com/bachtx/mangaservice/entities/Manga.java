@@ -4,6 +4,8 @@ import com.bachtx.wibucommon.entities.EntityTemplate;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import java.util.List;
 
@@ -25,12 +27,15 @@ public class Manga extends EntityTemplate {
     @JoinTable(name = "manga_author",
             joinColumns = @JoinColumn(name = "manga_id"),
             inverseJoinColumns = @JoinColumn(name = "author_id"))
+    @Fetch(FetchMode.SUBSELECT)
     private List<Author> authors;
     @OneToMany(mappedBy = "manga", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @Fetch(FetchMode.SUBSELECT)
     private List<Chapter> chapters;
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "manga_genre",
             joinColumns = @JoinColumn(name = "manga_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    @Fetch(FetchMode.SUBSELECT)
     private List<Genre> genres;
 }
