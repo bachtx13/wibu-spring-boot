@@ -33,7 +33,7 @@ public class MangaServiceImpl implements IMangaService {
 
     @Override
     public MangaResponse getById(UUID id) {
-        Manga foundManga = mangaRepository.findFullById(id)
+        Manga foundManga = mangaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Manga not found"));
         MangaResponse mangaResponse = mangaMapper.mangaToMangaResponse(foundManga);
         mangaResponse.setAuthors(authorMapper.listAuthorToListAuthorResponse(foundManga.getAuthors()));

@@ -9,20 +9,13 @@ import org.springframework.security.config.annotation.web.reactive.EnableWebFlux
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.security.web.server.context.ServerSecurityContextRepository;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.reactive.CorsWebFilter;
-import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
-
-import java.util.List;
-
-import static java.util.Arrays.asList;
 
 @Configuration
 @EnableWebFluxSecurity
 @RequiredArgsConstructor
 public class SecurityConfiguration {
-    public static final String[] PERMITTED_URL = new String[]{
+    public static final String[] PERMITTED_URLS = new String[]{
             "/token/get",
             "/auth/**",
             "/actuator/**"
@@ -46,7 +39,7 @@ public class SecurityConfiguration {
                 .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
                 .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
                 .authorizeExchange(exchanges -> exchanges
-                        .pathMatchers(PERMITTED_URL)
+                        .pathMatchers(PERMITTED_URLS)
                         .permitAll()
                         .anyExchange()
                         .authenticated()
