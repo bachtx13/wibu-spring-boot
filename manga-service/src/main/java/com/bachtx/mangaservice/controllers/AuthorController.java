@@ -26,6 +26,8 @@ public class AuthorController {
     public ResponseTemplate<AuthorResponse> getById(@PathVariable UUID id) {
         return ResponseTemplate.<AuthorResponse>builder()
                 .data(authorService.getById(id))
+                .message("Get author success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -33,6 +35,8 @@ public class AuthorController {
     public ResponseTemplate<List<AuthorResponse>> getAll() {
         return ResponseTemplate.<List<AuthorResponse>>builder()
                 .data(authorService.getAll())
+                .message("Get authors success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -40,6 +44,8 @@ public class AuthorController {
     public ResponseTemplate<AuthorResponse> create(@RequestBody @Valid UpdateAuthorPayload payload){
         return ResponseTemplate.<AuthorResponse>builder()
                 .data(authorService.create(payload))
+                .message("Create author success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -47,6 +53,7 @@ public class AuthorController {
     public ResponseTemplate<AuthorResponse> update(@PathVariable("id") UUID id, @RequestBody @Valid UpdateAuthorPayload payload){
         return ResponseTemplate.<AuthorResponse>builder()
                 .data(authorService.update(id, payload))
+                .message("Update author success")
                 .status(EResponseStatus.SUCCESS)
                 .build();
     }

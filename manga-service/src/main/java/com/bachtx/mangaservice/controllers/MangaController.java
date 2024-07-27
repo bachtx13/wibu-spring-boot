@@ -26,6 +26,8 @@ public class MangaController {
     public ResponseTemplate<MangaResponse> getById(@PathVariable UUID id) {
         return ResponseTemplate.<MangaResponse>builder()
                 .data(mangaService.getById(id))
+                .message("Get manga success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -33,6 +35,8 @@ public class MangaController {
     public ResponseTemplate<List<MangaResponse>> getAll() {
         return ResponseTemplate.<List<MangaResponse>>builder()
                 .data(mangaService.getAll())
+                .message("Get mangas success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -40,6 +44,8 @@ public class MangaController {
     public ResponseTemplate<MangaResponse> create(@RequestBody @Valid UpdateMangaPayload payload){
         return ResponseTemplate.<MangaResponse>builder()
                 .data(mangaService.create(payload))
+                .message("Create manga success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -47,6 +53,7 @@ public class MangaController {
     public ResponseTemplate<MangaResponse> update(@PathVariable("id") UUID id, @RequestBody @Valid UpdateMangaPayload payload){
         return ResponseTemplate.<MangaResponse>builder()
                 .data(mangaService.update(id, payload))
+                .message("Update manga success")
                 .status(EResponseStatus.SUCCESS)
                 .build();
     }

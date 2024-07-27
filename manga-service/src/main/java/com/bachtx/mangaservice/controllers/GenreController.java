@@ -26,6 +26,8 @@ public class GenreController {
     public ResponseTemplate<GenreResponse> getById(@PathVariable UUID id) {
         return ResponseTemplate.<GenreResponse>builder()
                 .data(genreService.getById(id))
+                .message("Get genre success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -33,6 +35,8 @@ public class GenreController {
     public ResponseTemplate<List<GenreResponse>> getAll() {
         return ResponseTemplate.<List<GenreResponse>>builder()
                 .data(genreService.getAll())
+                .message("Get genres success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -40,6 +44,8 @@ public class GenreController {
     public ResponseTemplate<GenreResponse> create(@RequestBody @Valid UpdateGenrePayload payload){
         return ResponseTemplate.<GenreResponse>builder()
                 .data(genreService.create(payload))
+                .message("Create genre success")
+                .status(EResponseStatus.SUCCESS)
                 .build();
     }
 
@@ -47,6 +53,7 @@ public class GenreController {
     public ResponseTemplate<GenreResponse> update(@PathVariable("id") UUID id, @RequestBody @Valid UpdateGenrePayload payload){
         return ResponseTemplate.<GenreResponse>builder()
                 .data(genreService.update(id, payload))
+                .message("Update genre success")
                 .status(EResponseStatus.SUCCESS)
                 .build();
     }

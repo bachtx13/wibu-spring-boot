@@ -3,6 +3,7 @@ package com.bachtx.authservice.controllers;
 import com.bachtx.authservice.exceptions.EmailAlreadyExistsException;
 import com.bachtx.authservice.exceptions.RegistrationVerifyErrorException;
 import com.bachtx.authservice.exceptions.UnverifiedUserException;
+import com.bachtx.authservice.exceptions.UserNotFoundException;
 import com.bachtx.wibucommon.dtos.response.ErrorResponse;
 import com.bachtx.wibucommon.dtos.response.ResponseTemplate;
 import com.bachtx.wibucommon.enums.EResponseStatus;
@@ -83,6 +84,20 @@ public class _RestControllerAdvice {
         return ResponseTemplate.builder()
                 .errors(
                         List.of(_extractErrorFromException(ex, "registration"))
+                )
+                .message(ex.getMessage())
+                .status(EResponseStatus.FAIL)
+                .build();
+    }
+
+    @ExceptionHandler({
+            UserNotFoundException.class
+    })
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseTemplate<?> handleUserNotFoundException(RuntimeException ex) {
+        return ResponseTemplate.builder()
+                .errors(
+                        List.of(_extractErrorFromException(ex, "login"))
                 )
                 .message(ex.getMessage())
                 .status(EResponseStatus.FAIL)
