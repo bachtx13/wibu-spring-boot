@@ -1,32 +1,30 @@
-version: '3.8'
+version: '2.29.1'
 services:
-  zookeeper:
-    container_name: wibu-zookeeper
-    image: bitnami/zookeeper
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2181
-      ZOOKEEPER_TICK_TIME: 2000
-    ports:
-      - "22181:2181"
-  kafka:
-    container_name: wibu-kafka
-    image: bitnami/kafka
-    depends_on:
-      - zookeeper
-    ports:
-      - "9092:9092"
-    environment:
-      KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
-      KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
-      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
   database:
     container_name: wibu-postgres
     image: postgres
     environment:
+      POSTGRES_DB: manga_db
       POSTGRES_USER: hongha
       POSTGRES_PASSWORD: '0705'
     ports:
       - "5432:5432"
+  kafka:
+    image: bitnami/kafka
+    container_name: wibu-kafka
+    ports:
+      - '9092:9092'
+    environment:
+      KAFKA_ENABLE_KRAFT: yes
+      KAFKA_CFG_PROCESS_ROLES: broker, controller
+      KAFKA_CFG_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CFG_LISTENERS: PLAINTEXT://:9092, CONTROLLER://:2181
+      KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT, PLAINTEXT:PLAINTEXT
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://127.0.0.1:9092
+      KAFKA_BROKER_ID: 1
+      KAFKA_CFG_CONTROLLER_QUORUM_VOTERS: 1@127.0.0.1:2181
+      ALLOW_PLAINTEXT_LISTENERS: yes
+      KAFKA_CFG_NODE_ID: 1
+    #     KAFKA_KRAFT_CLUSTER_ID:
+#    volumes:
+#      - ./kafka:/bitnami/kafka
