@@ -3,3 +3,6 @@ server:
 spring:
   application:
     name: mail-sender-service
+  mail:
+    default-encoding: UTF-8
+    host:

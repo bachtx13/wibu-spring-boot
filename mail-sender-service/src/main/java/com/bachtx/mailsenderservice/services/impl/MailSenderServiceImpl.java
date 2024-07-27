@@ -50,6 +50,7 @@ public class MailSenderServiceImpl implements IMailSenderService {
     private void sendHtmlMessage(String sendTo, String subject, String htmlBody) throws MessagingException {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(message, true, "UTF-8");
+        mimeMessageHelper.setFrom("honggha@wibu.com");
         mimeMessageHelper.setTo(sendTo);
         mimeMessageHelper.setSubject(subject);
         mimeMessageHelper.setText(htmlBody, true);

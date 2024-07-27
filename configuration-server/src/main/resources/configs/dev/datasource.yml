@@ -2,7 +2,7 @@ spring:
   datasource:
     driverClassName: org.postgresql.Driver
     url: jdbc:postgresql://localhost:5432/manga_db
-    username: hongha
+    username: 'hongha'
     password: '0705'
   jpa:
     show-sql: true

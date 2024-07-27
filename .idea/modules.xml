@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/manga-service/manga-service.iml" filepath="$PROJECT_DIR$/manga-service/manga-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/wibu-spring-ms.iml" filepath="$PROJECT_DIR$/wibu-spring-ms.iml" />
     </modules>
   </component>

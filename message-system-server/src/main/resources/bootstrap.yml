@@ -5,4 +5,4 @@ spring:
       discovery:
         enabled: true
         service-id: configuration-server
-      name: datasource, kafka
+      name: kafka
