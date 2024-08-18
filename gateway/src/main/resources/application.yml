@@ -7,20 +7,35 @@ spring:
     inetutils:
       timeout-seconds: 5
     gateway:
-      discovery:
-        locator:
-          lower-case-service-id: true
-          enabled: true
-      default-filters:
-        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
-      globalcors:
-        add-to-simple-url-handler-mapping: true
+      routes:
+        - id: auth
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+        - id: manga
+          uri: lb://MANGA-SERVICE
+          predicates:
+            - Path=/manga/**
+          filters:
+            - StripPrefix=1
+        - id: gallery
+          uri: lb://GALLERY-SERVICE
+          predicates:
+            - Path=/gallery/**
+          filters:
+            - StripPrefix=1
   main:
     web-application-type: reactive
+  mvc:
+    dispatch-options-request: true
 eureka:
   client:
     service-url:
       default-zone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
 management:
   endpoint:
     gateway:

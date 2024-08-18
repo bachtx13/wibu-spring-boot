@@ -47,38 +47,22 @@ public class SecurityConfiguration implements WebFluxConfigurer {
                         .pathMatchers(PERMITTED_URLS)
                         .permitAll()
                         .anyExchange()
-                        .authenticated()
+                        .permitAll()
                 )
                 .build();
     }
-
-//    @Bean
-//    CorsConfigurationSource corsConfigurationSource() {
-//        CorsConfiguration configuration = new CorsConfiguration();
-//        configuration.setAllowedOrigins(List.of("*"));
-//        configuration.setAllowedMethods(List.of("GET","POST"));
-//        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//        source.registerCorsConfiguration("/**", configuration);
-//        return source;
-//    }
-//
-//    @Override
-//    public void addCorsMappings(CorsRegistry registry) {
-//        registry.addMapping("/**")
-//                .allowedOrigins("http://localhost:4200")
-//                .allowedMethods("GET", "POST", "PATCH", "PUT", "DELETE")
-//                .allowedHeaders("*")
-//                .allowCredentials(true).maxAge(3600);
-//    }
     @Bean
-    public CorsWebFilter corsFilter() {
-        org.springframework.web.cors.CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.setAllowCredentials(true);
-        corsConfiguration.addAllowedOrigin("http://localhost:4200");
-        corsConfiguration.setAllowedMethods(List.of("*"));
-        corsConfiguration.setAllowedHeaders(List.of("*"));
+    public CorsWebFilter corsWebFilter() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedMethods(List.of("*"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setAllowCredentials(true);
+        configuration.setMaxAge(3600L); // Cache preflight response for an hour
+        configuration.setAllowPrivateNetwork(true);
+        configuration.setAllowedOriginPatterns(List.of("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfiguration);
+        source.registerCorsConfiguration("/**", configuration);
+
         return new CorsWebFilter(source);
     }
 }
