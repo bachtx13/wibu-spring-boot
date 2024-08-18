@@ -12,7 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 public class GalleryController {
     private final UploadFileService uploadFileService;

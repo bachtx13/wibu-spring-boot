@@ -9,6 +9,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
+import java.util.List;
+
 @Mapper
 public interface IUserMapper {
     IUserMapper INSTANCE = Mappers.getMapper(IUserMapper.class);
@@ -23,4 +25,8 @@ public interface IUserMapper {
             @Mapping(target = "roles", ignore = true)
     })
     UserInfoResponse userToUserInfoResponse(User user);
+    @Mappings({
+            @Mapping(target = "roles", ignore = true)
+    })
+    List<UserInfoResponse> userListToUserInfoResponseList(List<User> user);
 }

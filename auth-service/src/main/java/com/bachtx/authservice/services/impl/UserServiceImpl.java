@@ -16,6 +16,7 @@ import com.bachtx.authservice.repositories.ITokenHolderRepository;
 import com.bachtx.authservice.repositories.IUserRepository;
 import com.bachtx.authservice.services.IUserService;
 import com.bachtx.wibucommon.enums.EUserRole;
+import com.bachtx.wibucommon.exceptions.AccessDeniedException;
 import com.bachtx.wibucommon.exceptions.ServiceErrorException;
 import com.bachtx.wibucommon.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutorService;
@@ -156,6 +158,7 @@ public class UserServiceImpl implements IUserService {
                 .email(adminEmail)
                 .username(adminUsername)
                 .password(passwordEncoder.encode(adminPassword))
+                .birthday(Instant.now())
                 .roles(roles)
                 .verified(true)
                 .build();
@@ -175,9 +178,19 @@ public class UserServiceImpl implements IUserService {
         return userInfoResponse;
     }
 
+    @Override
+    public List<UserInfoResponse> getUserList(String token) {
+        String email = jwtUtil.getSubjectFromToken(token);
+        User user = userRepository.findByEmail(email);
+        Role adminRole = roleRepository.findByName(EUserRole.ROLE_ADMIN);
+        if(!user.getRoles().contains(adminRole)){
+            throw new AccessDeniedException("User doesn't have " + EUserRole.ROLE_ADMIN.getRoleName());
+        }
+        List<User> users = userRepository.findAll();
+        return userMapper.userListToUserInfoResponseList(users);
+    }
+
     private void _deleteToken(TokenHolder tokenHolder) {
-        executor.submit(() -> {
-            tokenHolderRepository.delete(tokenHolder);
-        });
+        executor.submit(() -> tokenHolderRepository.delete(tokenHolder));
     }
 }

@@ -16,7 +16,6 @@ import java.util.Objects;
 import java.util.UUID;
 
 @RestController
-@CrossOrigin
 @RequiredArgsConstructor
 @RequestMapping("genre")
 public class GenreController {

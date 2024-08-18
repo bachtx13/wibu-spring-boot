@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("hello-world")
 @AllArgsConstructor
-@CrossOrigin
 public class HelloWorldController {
     private final IUserService userService;
 

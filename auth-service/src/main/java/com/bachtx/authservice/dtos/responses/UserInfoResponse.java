@@ -15,7 +15,9 @@ public class UserInfoResponse {
     private String id;
     private String email;
     private String username;
+    private String avatarUrl;
     private List<EUserRole> roles;
+    private Instant birthday;
     private Instant createdDate;
     private Instant lastUpdated;
 }

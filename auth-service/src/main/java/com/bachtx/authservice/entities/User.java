@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.time.Instant;
 import java.util.Set;
 
 @Entity
@@ -19,6 +20,9 @@ public class User extends EntityTemplate {
     @Column(unique = true, nullable = false)
     private String email;
     private String username;
+    private String avatarUrl;
+    @Column(nullable = false)
+    private Instant birthday;
     @Column(unique = true, nullable = false)
     private String password;
     private boolean verified;

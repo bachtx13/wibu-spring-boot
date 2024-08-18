@@ -10,6 +10,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.validation.annotation.Validated;
 
+import java.time.Instant;
+
 @Validated
 @Builder
 @AllArgsConstructor
@@ -22,6 +24,8 @@ public class RegisterPayload {
     private String email;
     @NotEmpty(message = "Username must not be empty")
     private String username;
+    private String avatarUrl;
+    private Instant birthday;
     @ValidPassword
     @NotEmpty(message = "Password must not be empty")
     private String password;

@@ -6,6 +6,7 @@ import com.bachtx.authservice.dtos.responses.LoginResponse;
 import com.bachtx.authservice.dtos.responses.RegisterResponse;
 import com.bachtx.authservice.dtos.responses.UserInfoResponse;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface IUserService {
@@ -18,4 +19,6 @@ public interface IUserService {
     void initAdminUser();
 
     UserInfoResponse getUserInfo(String token);
+
+    List<UserInfoResponse> getUserList(String token);
 }

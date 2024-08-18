@@ -13,6 +13,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -53,6 +54,14 @@ public class AuthController {
         UserInfoResponse userInfoResponse = userService.getUserInfo(authorization);
         return ResponseTemplate.<UserInfoResponse>builder()
                 .data(userInfoResponse)
+                .status(EResponseStatus.SUCCESS)
+                .build();
+    }
+    @RequestMapping(value = "user-list", method = RequestMethod.GET)
+    public ResponseTemplate<List<UserInfoResponse>> getUserList(@RequestHeader(HttpHeaders.AUTHORIZATION) String authorization) {
+        List<UserInfoResponse> userInfoResponses = userService.getUserList(authorization);
+        return ResponseTemplate.<List<UserInfoResponse>>builder()
+                .data(userInfoResponses)
                 .status(EResponseStatus.SUCCESS)
                 .build();
     }
