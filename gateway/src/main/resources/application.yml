@@ -11,6 +11,10 @@ spring:
         locator:
           lower-case-service-id: true
           enabled: true
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        add-to-simple-url-handler-mapping: true
   main:
     web-application-type: reactive
 eureka:

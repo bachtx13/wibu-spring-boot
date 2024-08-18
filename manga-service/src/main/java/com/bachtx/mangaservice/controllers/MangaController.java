@@ -18,7 +18,6 @@ import java.util.UUID;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("")
-@CrossOrigin
 public class MangaController {
     private final IMangaService mangaService;
 
