@@ -14,6 +14,7 @@ public class GenreResponse {
     private UUID id;
     private String title;
     private String thumbnailUrl;
+    private String description;
     private boolean disabled;
     private Instant createdDate;
     private Instant lastUpdated;
