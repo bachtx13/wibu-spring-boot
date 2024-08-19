@@ -1,20 +1,22 @@
 package com.bachtx.mangaservice.dtos.payloads;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.springframework.validation.annotation.Validated;
 
+import java.util.List;
+
 @Validated
-@Builder
 @AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
-public class UpdateGenrePayload {
-    @NotEmpty
+@SuperBuilder
+public class UpdateChapterPayload {
     private String title;
     private String thumbnailUrl;
-    private String description;
+    private List<CreateStoryPagePayload> pages;
 }

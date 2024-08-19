@@ -20,4 +20,5 @@ public class Author extends EntityTemplate {
     private String name;
     @ManyToMany(mappedBy = "authors")
     private List<Manga> mangas;
+    private String description;
 }
