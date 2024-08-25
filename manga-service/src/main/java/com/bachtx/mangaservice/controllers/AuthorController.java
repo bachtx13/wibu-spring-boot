@@ -33,7 +33,7 @@ public class AuthorController {
 
     @RequestMapping(value = "get-all", method = RequestMethod.GET)
     public ResponseTemplate<List<AuthorResponse>> getAll(
-            @RequestParam(defaultValue = "1") Integer pageNumber,
+            @RequestParam(defaultValue = "0") Integer pageNumber,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "lastUpdated") String sortBy,
             @RequestParam(defaultValue = "desc") ESortType sortType

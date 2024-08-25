@@ -3,6 +3,10 @@ server:
 spring:
   application:
     name: gallery-service
+  servlet:
+    multipart:
+      max-request-size: 11MB
+      max-file-size: 10MB
 eureka:
   client:
     service-url:
