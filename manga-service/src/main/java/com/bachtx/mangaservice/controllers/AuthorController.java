@@ -5,6 +5,7 @@ import com.bachtx.mangaservice.dtos.response.AuthorResponse;
 import com.bachtx.mangaservice.services.IAuthorService;
 import com.bachtx.wibucommon.dtos.response.ResponseTemplate;
 import com.bachtx.wibucommon.enums.EResponseStatus;
+import com.bachtx.wibucommon.enums.ESortType;
 import com.bachtx.wibucommon.enums.EStatusAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -31,9 +32,14 @@ public class AuthorController {
     }
 
     @RequestMapping(value = "get-all", method = RequestMethod.GET)
-    public ResponseTemplate<List<AuthorResponse>> getAll() {
+    public ResponseTemplate<List<AuthorResponse>> getAll(
+            @RequestParam(defaultValue = "1") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "lastUpdated") String sortBy,
+            @RequestParam(defaultValue = "desc") ESortType sortType
+            ) {
         return ResponseTemplate.<List<AuthorResponse>>builder()
-                .data(authorService.getAll())
+                .data(authorService.getAll(pageNumber, pageSize, sortBy, sortType))
                 .message("Get authors success")
                 .status(EResponseStatus.SUCCESS)
                 .build();

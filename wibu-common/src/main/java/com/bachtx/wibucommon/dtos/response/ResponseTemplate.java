@@ -13,6 +13,7 @@ import java.util.List;
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ResponseTemplate<D> {
+    private MetaResponse meta;
     private String message;
     private D data;
     private List<ErrorResponse> errors;

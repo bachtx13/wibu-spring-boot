@@ -14,6 +14,7 @@ import com.bachtx.mangaservice.repositories.IStoryPageRepository;
 import com.bachtx.mangaservice.services.IChapterService;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -37,7 +38,8 @@ public class ChapterService implements IChapterService {
         chapterMapper.transferCreateChapterPayloadDataToChapter(newChapter, payload);
         List<StoryPage> pages = storyPageMapper.listCreateStoryPagePayloadToListStoryPage(payload.getPages());
         newChapter.setPages(pages);
-        chapterRepository.save(newChapter);
+        newChapter.setViews(1L);
+        newChapter = chapterRepository.save(newChapter);
         return chapterMapper.chapterToChapterResponse(newChapter);
     }
 
@@ -57,7 +59,7 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public List<ChapterResponse> getAll() {
+    public List<ChapterResponse> getAll(Pageable pageable) {
         return List.of();
     }
 }

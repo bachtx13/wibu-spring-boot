@@ -1,8 +1,7 @@
 package com.bachtx.mangaservice.dtos.payloads;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotNull;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.validation.annotation.Validated;
 
@@ -13,6 +12,9 @@ import java.util.UUID;
 @Setter
 @SuperBuilder
 @EqualsAndHashCode(callSuper = false)
+@AllArgsConstructor
+@NoArgsConstructor
 public class CreateChapterPayload extends UpdateChapterPayload {
+    @NotNull
     private UUID mangaId;
 }

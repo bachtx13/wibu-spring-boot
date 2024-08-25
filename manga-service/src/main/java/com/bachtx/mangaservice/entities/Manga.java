@@ -17,6 +17,7 @@ import java.util.List;
 public class Manga extends EntityTemplate {
     private String title;
     private String thumbnailUrl;
+
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")

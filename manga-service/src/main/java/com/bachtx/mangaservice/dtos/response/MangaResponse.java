@@ -23,6 +23,7 @@ public class MangaResponse {
     private List<GenreResponse> genres;
     private List<ChapterResponse> chapters;
     private boolean disabled;
+    private Long views;
     private Instant createdDate;
     private Instant lastUpdated;
 }

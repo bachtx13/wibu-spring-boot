@@ -17,6 +17,7 @@ import java.util.List;
 public class Chapter extends EntityTemplate {
     private String title;
     private String thumbnailUrl;
+    private Long views = 0L;
     @OneToMany(mappedBy = "chapter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<StoryPage> pages;
     @ManyToOne

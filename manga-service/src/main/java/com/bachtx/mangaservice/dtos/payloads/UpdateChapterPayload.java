@@ -1,5 +1,6 @@
 package com.bachtx.mangaservice.dtos.payloads;
 
+import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,6 +17,7 @@ import java.util.List;
 @Setter
 @SuperBuilder
 public class UpdateChapterPayload {
+    @NotEmpty
     private String title;
     private String thumbnailUrl;
     private List<CreateStoryPagePayload> pages;

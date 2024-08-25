@@ -8,6 +8,7 @@ import com.bachtx.mangaservice.repositories.IAuthorRepository;
 import com.bachtx.mangaservice.services.IAuthorService;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class AuthorServiceImpl implements IAuthorService {
     }
 
     @Override
-    public List<AuthorResponse> getAll() {
-        List<Author> foundAuthors = authorRepository.findAll();
+    public List<AuthorResponse> getAll(Pageable pageable) {
+        List<Author> foundAuthors = authorRepository.findAll(pageable).toList();
         return authorMapper.listAuthorToListAuthorResponse(foundAuthors);
     }
 

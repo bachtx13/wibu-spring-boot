@@ -5,6 +5,7 @@ import com.bachtx.mangaservice.dtos.response.GenreResponse;
 import com.bachtx.mangaservice.services.IGenreService;
 import com.bachtx.wibucommon.dtos.response.ResponseTemplate;
 import com.bachtx.wibucommon.enums.EResponseStatus;
+import com.bachtx.wibucommon.enums.ESortType;
 import com.bachtx.wibucommon.enums.EStatusAction;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
@@ -31,9 +32,14 @@ public class GenreController {
     }
 
     @RequestMapping(value = "get-all", method = RequestMethod.GET)
-    public ResponseTemplate<List<GenreResponse>> getAll() {
+    public ResponseTemplate<List<GenreResponse>> getAll(
+            @RequestParam(defaultValue = "1") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "lastUpdated") String sortBy,
+            @RequestParam(defaultValue = "desc") ESortType sortType
+    ) {
         return ResponseTemplate.<List<GenreResponse>>builder()
-                .data(genreService.getAll())
+                .data(genreService.getAll(pageNumber, pageSize, sortBy, sortType))
                 .message("Get genres success")
                 .status(EResponseStatus.SUCCESS)
                 .build();

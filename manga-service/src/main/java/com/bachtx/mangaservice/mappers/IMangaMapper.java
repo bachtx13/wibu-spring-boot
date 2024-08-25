@@ -11,40 +11,29 @@ import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(
+        uses = {
+                IAuthorMapper.class,
+                IChapterMapper.class,
+                IGenreMapper.class,
+                IUserMapper.class
+        }
+)
 public interface IMangaMapper {
     IMangaMapper INSTANCE = Mappers.getMapper(IMangaMapper.class);
 
-    @Mappings({
-            @Mapping(target = "publisher", ignore = true),
-            @Mapping(target = "authors", ignore = true),
-            @Mapping(target = "chapters", ignore = true),
-            @Mapping(target = "genres", ignore = true),
-    })
+    @Mappings({})
     MangaResponse mangaToMangaResponse(Manga manga);
 
     @Mappings({
-            @Mapping(target = "publisher", ignore = true),
-            @Mapping(target = "authors", ignore = true),
-            @Mapping(target = "chapters", ignore = true),
-            @Mapping(target = "genres", ignore = true),
+            @Mapping(target = "chapters", ignore = true)
     })
     List<MangaResponse> listMangaToListMangaResponse(List<Manga> mangas);
 
-    @Mappings({
-            @Mapping(target = "publisher", ignore = true),
-            @Mapping(target = "authors", ignore = true),
-            @Mapping(target = "chapters", ignore = true),
-            @Mapping(target = "genres", ignore = true),
-    })
+    @Mappings({})
     Manga mangaResponseToManga(MangaResponse mangaResponse);
 
-    @Mappings({
-            @Mapping(target = "publisher", ignore = true),
-            @Mapping(target = "authors", ignore = true),
-            @Mapping(target = "chapters", ignore = true),
-            @Mapping(target = "genres", ignore = true),
-    })
+    @Mappings({})
     Manga updateMangaPayloadToManga(UpdateMangaPayload updateMangaResponse);
 
     @Mappings({
