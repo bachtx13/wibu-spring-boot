@@ -6,6 +6,7 @@ import com.bachtx.mangaservice.entities.Genre;
 import com.bachtx.mangaservice.mappers.IGenreMapper;
 import com.bachtx.mangaservice.repositories.IGenreRepository;
 import com.bachtx.mangaservice.services.IGenreService;
+import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -35,6 +36,11 @@ public class GenreServiceImpl implements IGenreService {
     }
 
     @Override
+    public Long getNumberOfRecords(ERecordStatus status) {
+        return 0L;
+    }
+
+    @Override
     public GenreResponse create(UpdateGenrePayload payload) {
             Genre newGenre = genreMapper.updateGenrePayloadToGenre(payload);
             Genre savedGenre = genreRepository.save(newGenre);
@@ -51,10 +57,10 @@ public class GenreServiceImpl implements IGenreService {
     }
 
     @Override
-    public GenreResponse updateStatus(UUID id, boolean status) {
+    public GenreResponse updateStatus(UUID id, boolean isDeActive) {
         Genre genreToUpdate = genreRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Genre not found"));
-        genreToUpdate.setDisabled(status);
+        genreToUpdate.setDisabled(isDeActive);
         Genre savedGenre = genreRepository.save(genreToUpdate);
         return genreMapper.genreToGenreResponse(savedGenre);
     }

@@ -6,6 +6,7 @@ import com.bachtx.mangaservice.entities.Author;
 import com.bachtx.mangaservice.mappers.IAuthorMapper;
 import com.bachtx.mangaservice.repositories.IAuthorRepository;
 import com.bachtx.mangaservice.services.IAuthorService;
+import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -25,13 +26,17 @@ public class AuthorServiceImpl implements IAuthorService {
         Author foundAuthor = authorRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Author not found"));
         return authorMapper.authorToAuthorResponse(foundAuthor);
-
     }
 
     @Override
     public List<AuthorResponse> getAll(Pageable pageable) {
         List<Author> foundAuthors = authorRepository.findAll(pageable).toList();
         return authorMapper.listAuthorToListAuthorResponse(foundAuthors);
+    }
+
+    @Override
+    public Long getNumberOfRecords(ERecordStatus status) {
+        return 0L;
     }
 
     @Override
@@ -51,10 +56,10 @@ public class AuthorServiceImpl implements IAuthorService {
     }
 
     @Override
-    public AuthorResponse updateStatus(UUID id, boolean status) {
+    public AuthorResponse updateStatus(UUID id, boolean isDeActive) {
         Author authorToUpdate = authorRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Author not found"));
-        authorToUpdate.setDisabled(status);
+        authorToUpdate.setDisabled(isDeActive);
         Author savedAuthor = authorRepository.save(authorToUpdate);
         return authorMapper.authorToAuthorResponse(savedAuthor);
     }

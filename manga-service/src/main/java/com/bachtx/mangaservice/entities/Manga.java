@@ -19,6 +19,7 @@ public class Manga extends EntityTemplate {
     private String thumbnailUrl;
 
     private String description;
+    private Long views = 0L;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "publisher_id")
     private User publisher;

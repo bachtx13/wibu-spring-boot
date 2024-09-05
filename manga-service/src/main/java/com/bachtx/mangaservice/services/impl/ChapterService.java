@@ -12,6 +12,7 @@ import com.bachtx.mangaservice.repositories.IChapterRepository;
 import com.bachtx.mangaservice.repositories.IMangaRepository;
 import com.bachtx.mangaservice.repositories.IStoryPageRepository;
 import com.bachtx.mangaservice.services.IChapterService;
+import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -49,7 +50,7 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public ChapterResponse updateStatus(UUID id, boolean status) {
+    public ChapterResponse updateStatus(UUID id, boolean isDeActive) {
         return null;
     }
 
@@ -61,5 +62,10 @@ public class ChapterService implements IChapterService {
     @Override
     public List<ChapterResponse> getAll(Pageable pageable) {
         return List.of();
+    }
+
+    @Override
+    public Long getNumberOfRecords(ERecordStatus status) {
+        return 0L;
     }
 }

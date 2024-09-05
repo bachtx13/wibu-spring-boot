@@ -15,4 +15,5 @@ public class MetaResponse {
     private int pageSize;
     private String sortBy;
     private ESortType sortType;
+    private Long numberOfRecords;
 }

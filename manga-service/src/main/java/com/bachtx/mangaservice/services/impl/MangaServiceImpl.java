@@ -1,21 +1,22 @@
 package com.bachtx.mangaservice.services.impl;
 
+import com.bachtx.mangaservice.contexts.AuthenticationContextHolder;
+import com.bachtx.mangaservice.contexts.models.AuthenticationContext;
 import com.bachtx.mangaservice.dtos.payloads.UpdateMangaPayload;
-import com.bachtx.mangaservice.dtos.raws.MangaPreviewRaw;
 import com.bachtx.mangaservice.dtos.response.MangaResponse;
 import com.bachtx.mangaservice.entities.Author;
 import com.bachtx.mangaservice.entities.Genre;
 import com.bachtx.mangaservice.entities.Manga;
 import com.bachtx.mangaservice.entities.User;
-import com.bachtx.mangaservice.mappers.IAuthorMapper;
-import com.bachtx.mangaservice.mappers.IGenreMapper;
 import com.bachtx.mangaservice.mappers.IMangaMapper;
-import com.bachtx.mangaservice.mappers.IUserMapper;
-import com.bachtx.mangaservice.repositories.*;
+import com.bachtx.mangaservice.repositories.IAuthorRepository;
+import com.bachtx.mangaservice.repositories.IGenreRepository;
+import com.bachtx.mangaservice.repositories.IMangaRepository;
 import com.bachtx.mangaservice.services.IMangaService;
+import com.bachtx.wibucommon.enums.ERecordStatus;
+import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.AccessDeniedException;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
-import com.bachtx.wibucommon.utils.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -29,13 +30,7 @@ public class MangaServiceImpl implements IMangaService {
     private final IMangaRepository mangaRepository;
     private final IAuthorRepository authorRepository;
     private final IGenreRepository genreRepository;
-    private final IUserRepository userRepository;
-    private final IChapterRepository chapterRepository;
-    private final JwtUtil jwtUtil;
     private final IMangaMapper mangaMapper = IMangaMapper.INSTANCE;
-    private final IAuthorMapper authorMapper = IAuthorMapper.INSTANCE;
-    private final IGenreMapper genreMapper = IGenreMapper.INSTANCE;
-    private final IUserMapper userMapper = IUserMapper.INSTANCE;
 
     @Override
     public MangaResponse getById(UUID id) {
@@ -46,18 +41,20 @@ public class MangaServiceImpl implements IMangaService {
 
     @Override
     public List<MangaResponse> getAll(Pageable pageable) {
-        List<MangaPreviewRaw> mangaPreviewRaws = mangaRepository.findAllPreviewManga(pageable);
-        return mangaPreviewRaws.stream().map(mangaPreviewRaw -> {
-            MangaResponse mangaResponse = mangaMapper.mangaToMangaResponse(mangaPreviewRaw.getManga());
-            mangaResponse.setViews(mangaPreviewRaw.getTotalViews());
-            mangaResponse.setChapters(null);
-            return mangaResponse;
-        }).toList();
+        List<Manga> mangas = mangaRepository.findAll(pageable).toList();
+        return mangaMapper.listMangaToListMangaPreviewResponse(mangas);
     }
 
     @Override
-    public MangaResponse create(UpdateMangaPayload payload) {
-        return null;
+    public Long getNumberOfRecords(ERecordStatus status) {
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+            status = ERecordStatus.ENABLED;
+        }
+        if(status != ERecordStatus.IGNORE_STATUS){
+            return mangaRepository.countByDisabled(status == ERecordStatus.DISABLED);
+        }
+        return mangaRepository.count();
     }
 
     @Override
@@ -71,10 +68,10 @@ public class MangaServiceImpl implements IMangaService {
     }
 
     @Override
-    public MangaResponse updateStatus(UUID id, boolean status) {
+    public MangaResponse updateStatus(UUID id, boolean isDeActive) {
         Manga mangaToUpdate = mangaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Manga not found"));
-        mangaToUpdate.setDisabled(status);
+        mangaToUpdate.setDisabled(isDeActive);
         Manga savedManga = mangaRepository.save(mangaToUpdate);
         return mangaMapper.mangaToMangaResponse(savedManga);
     }
@@ -93,12 +90,15 @@ public class MangaServiceImpl implements IMangaService {
     }
 
     @Override
-    public MangaResponse create(UpdateMangaPayload payload, String token) {
-        String publisherEmail = jwtUtil.getSubjectFromToken(token);
-        User foundUser = userRepository.findByEmail(publisherEmail);
-        if (foundUser == null) {
-            throw new AccessDeniedException("User not found");
+    public MangaResponse create(UpdateMangaPayload payload) {
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if (!authenticationContext.isAuthenticated()) {
+            throw new AccessDeniedException("User not logged yet");
         }
+        if (authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
+            throw new AccessDeniedException("User hasn\\'t permission");
+        }
+        User foundUser = AuthenticationContextHolder.getContext().getPrincipal();
         Manga newManga = mangaMapper.updateMangaPayloadToManga(payload);
         _updateMangaRelationData(newManga, payload);
         newManga.setPublisher(foundUser);

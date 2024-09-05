@@ -3,10 +3,7 @@ package com.bachtx.mangaservice.mappers;
 import com.bachtx.mangaservice.dtos.payloads.UpdateMangaPayload;
 import com.bachtx.mangaservice.dtos.response.MangaResponse;
 import com.bachtx.mangaservice.entities.Manga;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -28,7 +25,12 @@ public interface IMangaMapper {
     @Mappings({
             @Mapping(target = "chapters", ignore = true)
     })
-    List<MangaResponse> listMangaToListMangaResponse(List<Manga> mangas);
+    @Named("mangaToMangaPreviewResponse")
+    MangaResponse mangaToMangaPreviewResponse(Manga manga);
+
+    @Mappings({})
+    @IterableMapping(qualifiedByName = "mangaToMangaPreviewResponse")
+    List<MangaResponse> listMangaToListMangaPreviewResponse(List<Manga> mangas);
 
     @Mappings({})
     Manga mangaResponseToManga(MangaResponse mangaResponse);

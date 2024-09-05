@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table
@@ -21,5 +21,5 @@ public class Role extends EntityTemplate {
     @Enumerated(EnumType.STRING)
     private EUserRole name;
     @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
-    private List<User> users;
+    private Set<User> users;
 }
