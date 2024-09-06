@@ -17,7 +17,6 @@ public class ChapterResponse {
     private UUID id;
     private String title;
     private String thumbnailUrl;
-    private MangaResponse manga;
     private List<StoryPageResponse> pages;
     private Integer views;
     private Instant createdDate;

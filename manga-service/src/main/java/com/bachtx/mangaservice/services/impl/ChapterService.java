@@ -46,17 +46,29 @@ public class ChapterService implements IChapterService {
 
     @Override
     public ChapterResponse update(UUID id, UpdateChapterPayload payload) {
-        return null;
+        Chapter foundChapter = chapterRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Chapter not found"));
+        chapterMapper.transferUpdateChapterPayloadDataToChapter(foundChapter, payload);
+        List<StoryPage> pages = storyPageMapper.listCreateStoryPagePayloadToListStoryPage(payload.getPages());
+        foundChapter.setPages(pages);
+        Chapter updatedChapter = chapterRepository.save(foundChapter);
+        return chapterMapper.chapterToChapterResponse(updatedChapter);
     }
 
     @Override
     public ChapterResponse updateStatus(UUID id, boolean isDeActive) {
-        return null;
+        Chapter chapterToUpdate = chapterRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Chapter not found"));
+        chapterToUpdate.setDisabled(isDeActive);
+        Chapter savedChapter = chapterRepository.save(chapterToUpdate);
+        return chapterMapper.chapterToChapterResponse(savedChapter);
     }
 
     @Override
     public ChapterResponse getById(UUID id) {
-        return null;
+        Chapter foundChapter = chapterRepository.findById(id)
+                .orElseThrow(() -> new RecordNotFoundException("Chapter not found"));
+        return chapterMapper.chapterToChapterResponse(foundChapter);
     }
 
     @Override

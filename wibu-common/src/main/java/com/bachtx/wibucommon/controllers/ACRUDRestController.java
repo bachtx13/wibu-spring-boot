@@ -35,6 +35,7 @@ public abstract class ACRUDRestController<CreateRequest, UpdateRequest, Response
 
     @RequestMapping(value = "get-all", method = RequestMethod.GET)
     protected ResponseTemplate<List<Response>> getAll(
+            @RequestParam(defaultValue = "false") boolean isTakeTheWhole,
             @RequestParam(defaultValue = "1") Integer pageNumber,
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "lastUpdated") String sortBy,

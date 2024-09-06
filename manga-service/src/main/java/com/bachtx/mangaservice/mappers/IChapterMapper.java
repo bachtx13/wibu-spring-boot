@@ -5,57 +5,37 @@ import com.bachtx.mangaservice.dtos.payloads.UpdateChapterPayload;
 import com.bachtx.mangaservice.dtos.response.ChapterResponse;
 import com.bachtx.mangaservice.entities.Chapter;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import org.mapstruct.Mappings;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
 
-@Mapper
+@Mapper(uses = {
+        IStoryPageMapper.class
+})
 public interface IChapterMapper {
     IChapterMapper INSTANCE = Mappers.getMapper(IChapterMapper.class);
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     ChapterResponse chapterToChapterResponse(Chapter chapter);
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     List<ChapterResponse> listChapterToListChapterResponse(List<Chapter> chapters);
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     Chapter chapterResponseToChapter(ChapterResponse chapterResponse);
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     Chapter createChapterPayloadToChapter(CreateChapterPayload createChapterPayload);
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     void transferCreateChapterPayloadDataToChapter(@MappingTarget Chapter chapter, CreateChapterPayload createChapterPayload);
 
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     Chapter updateChapterPayloadToChapter(UpdateChapterPayload updateChapterResponse);
 
-    @Mappings({
-            @Mapping(target = "manga", ignore = true),
-            @Mapping(target = "pages", ignore = true),
-    })
+    @Mappings({})
     void transferUpdateChapterPayloadDataToChapter(@MappingTarget Chapter chapter, UpdateChapterPayload updateChapterPayload);
 }
