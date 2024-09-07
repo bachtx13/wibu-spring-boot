@@ -11,8 +11,8 @@
         <module name="wibu-common" />
         <module name="auth-service" />
         <module name="discovery-server" />
-        <module name="message-system-server" />
         <module name="gallery-service" />
+        <module name="message-system-server" />
         <module name="configuration-server" />
         <module name="manga-service" />
         <module name="gateway" />

@@ -5,7 +5,7 @@ import com.bachtx.mangaservice.contexts.models.AuthenticationContext;
 import com.bachtx.mangaservice.entities.User;
 import com.bachtx.mangaservice.repositories.IUserRepository;
 import com.bachtx.wibucommon.constant.SecurityConstant;
-import com.bachtx.wibucommon.exceptions.AccessDeniedException;
+import com.bachtx.wibucommon.exceptions.InvalidTokenException;
 import com.bachtx.wibucommon.utils.JwtUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,10 +26,11 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         try{
             String token = request.getHeader(SecurityConstant.AUTHORIZATION);
+            jwtUtil.validateToken(token);
             String email = jwtUtil.getSubjectFromToken(token);
             User user = userRepository.findByEmail(email);
             if(user == null){
-                throw new AccessDeniedException("User was not logged in!");
+                throw new InvalidTokenException("Token invalid");
             }
             AuthenticationContext userContext = AuthenticationContext.builder()
                     .principal(user)
@@ -40,6 +41,7 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
         } catch (Exception e){
             log.warn(e.getMessage());
             AuthenticationContextHolder.createEmptyContext();
+            AuthenticationContextHolder.getContext().setCause(e.getMessage());
         }
         return HandlerInterceptor.super.preHandle(request, response, handler);
     }
@@ -52,5 +54,6 @@ public class AuthenticationInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, @Nullable Exception ex) throws Exception {
         HandlerInterceptor.super.afterCompletion(request, response, handler, ex);
+        AuthenticationContextHolder.clearContext();
     }
 }

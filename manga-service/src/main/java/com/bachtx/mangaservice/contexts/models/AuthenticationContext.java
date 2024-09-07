@@ -5,7 +5,7 @@ import com.bachtx.mangaservice.entities.User;
 import com.bachtx.wibucommon.enums.EUserRole;
 import lombok.*;
 
-import java.util.Set;
+import java.util.List;
 
 @Getter
 @Setter
@@ -14,8 +14,9 @@ import java.util.Set;
 @AllArgsConstructor
 public class AuthenticationContext {
     private User principal;
-    private Set<Role> authorities;
+    private List<Role> authorities;
     private boolean authenticated;
+    private String cause;
 
     public boolean hasRole(EUserRole role) {
         return authorities.stream()

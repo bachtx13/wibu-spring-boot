@@ -19,7 +19,9 @@ import java.util.List;
 public interface IMangaMapper {
     IMangaMapper INSTANCE = Mappers.getMapper(IMangaMapper.class);
 
-    @Mappings({})
+    @Mappings({
+            @Mapping(target = "chapters", qualifiedByName = "chapterToChapterResponseWithoutPages")
+    })
     MangaResponse mangaToMangaResponse(Manga manga);
 
     @Mappings({

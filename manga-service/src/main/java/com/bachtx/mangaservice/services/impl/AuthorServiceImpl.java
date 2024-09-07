@@ -10,6 +10,7 @@ import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,7 +30,7 @@ public class AuthorServiceImpl implements IAuthorService {
     }
 
     @Override
-    public List<AuthorResponse> getAll(Pageable pageable) {
+    public List<AuthorResponse> getAll(Pageable pageable, Specification<Author> specification) {
         List<Author> foundAuthors = authorRepository.findAll(pageable).toList();
         return authorMapper.listAuthorToListAuthorResponse(foundAuthors);
     }

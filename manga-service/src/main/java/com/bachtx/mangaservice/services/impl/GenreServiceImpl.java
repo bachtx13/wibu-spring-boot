@@ -10,6 +10,7 @@ import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,8 +31,8 @@ public class GenreServiceImpl implements IGenreService {
     }
 
     @Override
-    public List<GenreResponse> getAll(Pageable pageable) {
-        List<Genre> foundGenres = genreRepository.findAll(pageable).toList();
+    public List<GenreResponse> getAll(Pageable pageable, Specification<Genre> filterSpecification) {
+        List<Genre> foundGenres = genreRepository.findAll(filterSpecification, pageable).toList();
         return genreMapper.listGenreToListGenreResponse(foundGenres);
     }
 

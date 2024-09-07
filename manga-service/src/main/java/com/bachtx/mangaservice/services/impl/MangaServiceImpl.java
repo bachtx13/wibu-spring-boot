@@ -19,6 +19,7 @@ import com.bachtx.wibucommon.exceptions.AccessDeniedException;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -40,21 +41,26 @@ public class MangaServiceImpl implements IMangaService {
     }
 
     @Override
-    public List<MangaResponse> getAll(Pageable pageable) {
-        List<Manga> mangas = mangaRepository.findAll(pageable).toList();
+    public List<MangaResponse> getAll(Pageable pageable, Specification<Manga> specification) {
+        List<Manga> mangas = mangaRepository.findAll(specification, pageable).toList();
         return mangaMapper.listMangaToListMangaPreviewResponse(mangas);
     }
 
     @Override
-    public Long getNumberOfRecords(ERecordStatus status) {
+    public MangaResponse create(UpdateMangaPayload payload) {
         AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
-            status = ERecordStatus.ENABLED;
+        if (!authenticationContext.isAuthenticated()) {
+            throw new AccessDeniedException(authenticationContext.getCause());
         }
-        if(status != ERecordStatus.IGNORE_STATUS){
-            return mangaRepository.countByDisabled(status == ERecordStatus.DISABLED);
+        if (authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
+            throw new AccessDeniedException("User hasn\\'t permission");
         }
-        return mangaRepository.count();
+        User foundUser = AuthenticationContextHolder.getContext().getPrincipal();
+        Manga newManga = mangaMapper.updateMangaPayloadToManga(payload);
+        _updateMangaRelationData(newManga, payload);
+        newManga.setPublisher(foundUser);
+        Manga savedManga = mangaRepository.save(newManga);
+        return mangaMapper.mangaToMangaResponse(savedManga);
     }
 
     @Override
@@ -76,6 +82,18 @@ public class MangaServiceImpl implements IMangaService {
         return mangaMapper.mangaToMangaResponse(savedManga);
     }
 
+    @Override
+    public Long getNumberOfRecords(ERecordStatus status) {
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+            status = ERecordStatus.ENABLED;
+        }
+        if(status != ERecordStatus.IGNORE_STATUS){
+            return mangaRepository.countByDisabled(status == ERecordStatus.DISABLED);
+        }
+        return mangaRepository.count();
+    }
+
     private void _updateMangaRelationData(Manga manga, UpdateMangaPayload payload) {
         List<Author> authors = authorRepository.findAllByIdIn(payload.getAuthorIds());
         List<Genre> genres = genreRepository.findAllByIdIn(payload.getGenreIds());
@@ -87,22 +105,5 @@ public class MangaServiceImpl implements IMangaService {
         }
         manga.setAuthors(authors);
         manga.setGenres(genres);
-    }
-
-    @Override
-    public MangaResponse create(UpdateMangaPayload payload) {
-        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if (!authenticationContext.isAuthenticated()) {
-            throw new AccessDeniedException("User not logged yet");
-        }
-        if (authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
-            throw new AccessDeniedException("User hasn\\'t permission");
-        }
-        User foundUser = AuthenticationContextHolder.getContext().getPrincipal();
-        Manga newManga = mangaMapper.updateMangaPayloadToManga(payload);
-        _updateMangaRelationData(newManga, payload);
-        newManga.setPublisher(foundUser);
-        Manga savedManga = mangaRepository.save(newManga);
-        return mangaMapper.mangaToMangaResponse(savedManga);
     }
 }

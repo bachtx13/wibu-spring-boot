@@ -2,6 +2,7 @@ package com.bachtx.wibucommon.controllers;
 
 import com.bachtx.wibucommon.dtos.response.MetaResponse;
 import com.bachtx.wibucommon.dtos.response.ResponseTemplate;
+import com.bachtx.wibucommon.entities.EntityTemplate;
 import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.enums.EResponseStatus;
 import com.bachtx.wibucommon.enums.ESortType;
@@ -15,10 +16,15 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public abstract class ACRUDRestController<CreateRequest, UpdateRequest, Response> {
-    private final IBaseCRUDService<CreateRequest, UpdateRequest, Response> baseCRUDService;
+public abstract class ACRUDRestController<
+        Entity extends EntityTemplate,
+        Response,
+        CreateRequest,
+        UpdateRequest
+        > {
+    private final IBaseCRUDService<Entity, Response, CreateRequest, UpdateRequest> baseCRUDService;
 
-    protected ACRUDRestController(IBaseCRUDService<CreateRequest, UpdateRequest, Response> baseCRUDService) {
+    protected ACRUDRestController(IBaseCRUDService<Entity, Response, CreateRequest, UpdateRequest> baseCRUDService) {
         this.baseCRUDService = baseCRUDService;
     }
 
@@ -40,6 +46,7 @@ public abstract class ACRUDRestController<CreateRequest, UpdateRequest, Response
             @RequestParam(defaultValue = "10") Integer pageSize,
             @RequestParam(defaultValue = "lastUpdated") String sortBy,
             @RequestParam(defaultValue = "desc") ESortType sortType,
+            @RequestParam(defaultValue = "") String filterRules,
             @RequestParam(defaultValue = "enabled") ERecordStatus status
     ) {
         return ResponseTemplate.<List<Response>>builder()
@@ -50,7 +57,7 @@ public abstract class ACRUDRestController<CreateRequest, UpdateRequest, Response
                                 .numberOfRecords(baseCRUDService.getNumberOfRecords(status))
                                 .build()
                 )
-                .data(baseCRUDService.getAll(pageNumber, pageSize, sortBy, sortType))
+                .data(baseCRUDService.getAll(isTakeTheWhole, pageNumber, pageSize, sortBy, sortType, filterRules))
                 .message("Get data success")
                 .status(EResponseStatus.SUCCESS)
                 .build();

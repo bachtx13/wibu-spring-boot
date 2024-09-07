@@ -18,9 +18,14 @@ public class Chapter extends EntityTemplate {
     private String title;
     private String thumbnailUrl;
     private Long views = 0L;
-    @OneToMany(mappedBy = "chapter", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "chapter", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<StoryPage> pages;
     @ManyToOne
     @JoinColumn(name = "manga_id")
     private Manga manga;
+
+    public void setPages(List<StoryPage> pages) {
+        pages.forEach(p -> p.setChapter(this));
+        this.pages = pages;
+    }
 }

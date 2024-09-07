@@ -16,6 +16,7 @@ import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -39,7 +40,7 @@ public class ChapterService implements IChapterService {
         chapterMapper.transferCreateChapterPayloadDataToChapter(newChapter, payload);
         List<StoryPage> pages = storyPageMapper.listCreateStoryPagePayloadToListStoryPage(payload.getPages());
         newChapter.setPages(pages);
-        newChapter.setViews(1L);
+        newChapter.setViews(0L);
         newChapter = chapterRepository.save(newChapter);
         return chapterMapper.chapterToChapterResponse(newChapter);
     }
@@ -72,7 +73,7 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public List<ChapterResponse> getAll(Pageable pageable) {
+    public List<ChapterResponse> getAll(Pageable pageable, Specification<Chapter> specification) {
         return List.of();
     }
 

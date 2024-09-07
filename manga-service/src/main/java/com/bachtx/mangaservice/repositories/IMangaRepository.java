@@ -1,12 +1,19 @@
 package com.bachtx.mangaservice.repositories;
 
 import com.bachtx.mangaservice.entities.Manga;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.bachtx.wibucommon.repositories.IBaseJpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface IMangaRepository extends JpaRepository<Manga, UUID> {
+public interface IMangaRepository extends IBaseJpaRepository<Manga, UUID> {
     Long countByDisabled(boolean disabled);
+    List<Manga> findAll();
+    Page<Manga> findAll(Pageable pageable);
+    Page<Manga> findAll(Specification<Manga> specification, Pageable pageable);
 }

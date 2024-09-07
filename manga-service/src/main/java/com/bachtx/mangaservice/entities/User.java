@@ -27,7 +27,7 @@ public class User extends EntityTemplate {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id")
     )
-    private Set<Role> roles;
+    private List<Role> roles;
     @OneToMany(mappedBy = "publisher", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Manga> mangas;
 }
