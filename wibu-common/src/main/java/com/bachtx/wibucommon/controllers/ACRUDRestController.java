@@ -57,7 +57,17 @@ public abstract class ACRUDRestController<
                                 .numberOfRecords(baseCRUDService.getNumberOfRecords(status))
                                 .build()
                 )
-                .data(baseCRUDService.getAll(isTakeTheWhole, pageNumber, pageSize, sortBy, sortType, filterRules))
+                .data(
+                        baseCRUDService.getAll(
+                                isTakeTheWhole,
+                                status,
+                                pageNumber,
+                                pageSize,
+                                sortBy,
+                                sortType,
+                                filterRules
+                        )
+                )
                 .message("Get data success")
                 .status(EResponseStatus.SUCCESS)
                 .build();
@@ -92,7 +102,7 @@ public abstract class ACRUDRestController<
             @PathVariable("id") UUID id
     ) {
         boolean isDeActive =
-                Objects.equals(request.getRequestURI().split("/")[2], EStatusAction.ACTIVE.getAction());
+                Objects.equals(request.getRequestURI().split("/")[2], EStatusAction.DE_ACTIVE.getAction());
         return this.updateStatus(id, isDeActive);
     }
 

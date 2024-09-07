@@ -1,5 +1,7 @@
 package com.bachtx.mangaservice.services.impl;
 
+import com.bachtx.mangaservice.contexts.AuthenticationContextHolder;
+import com.bachtx.mangaservice.contexts.models.AuthenticationContext;
 import com.bachtx.mangaservice.dtos.payloads.UpdateAuthorPayload;
 import com.bachtx.mangaservice.dtos.response.AuthorResponse;
 import com.bachtx.mangaservice.entities.Author;
@@ -7,6 +9,7 @@ import com.bachtx.mangaservice.mappers.IAuthorMapper;
 import com.bachtx.mangaservice.repositories.IAuthorRepository;
 import com.bachtx.mangaservice.services.IAuthorService;
 import com.bachtx.wibucommon.enums.ERecordStatus;
+import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -31,7 +34,7 @@ public class AuthorServiceImpl implements IAuthorService {
 
     @Override
     public List<AuthorResponse> getAll(Pageable pageable, Specification<Author> specification) {
-        List<Author> foundAuthors = authorRepository.findAll(pageable).toList();
+        List<Author> foundAuthors = authorRepository.findAll(specification, pageable).toList();
         return authorMapper.listAuthorToListAuthorResponse(foundAuthors);
     }
 
@@ -63,5 +66,13 @@ public class AuthorServiceImpl implements IAuthorService {
         authorToUpdate.setDisabled(isDeActive);
         Author savedAuthor = authorRepository.save(authorToUpdate);
         return authorMapper.authorToAuthorResponse(savedAuthor);
+    }
+    @Override
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+            status = ERecordStatus.ENABLED;
+        }
+        return status;
     }
 }

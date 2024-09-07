@@ -1,5 +1,7 @@
 package com.bachtx.mangaservice.services.impl;
 
+import com.bachtx.mangaservice.contexts.AuthenticationContextHolder;
+import com.bachtx.mangaservice.contexts.models.AuthenticationContext;
 import com.bachtx.mangaservice.dtos.payloads.CreateChapterPayload;
 import com.bachtx.mangaservice.dtos.payloads.UpdateChapterPayload;
 import com.bachtx.mangaservice.dtos.response.ChapterResponse;
@@ -13,6 +15,7 @@ import com.bachtx.mangaservice.repositories.IMangaRepository;
 import com.bachtx.mangaservice.repositories.IStoryPageRepository;
 import com.bachtx.mangaservice.services.IChapterService;
 import com.bachtx.wibucommon.enums.ERecordStatus;
+import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -80,5 +83,13 @@ public class ChapterService implements IChapterService {
     @Override
     public Long getNumberOfRecords(ERecordStatus status) {
         return 0L;
+    }
+    @Override
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+            status = ERecordStatus.ENABLED;
+        }
+        return status;
     }
 }

@@ -52,7 +52,7 @@ public class MangaServiceImpl implements IMangaService {
         if (!authenticationContext.isAuthenticated()) {
             throw new AccessDeniedException(authenticationContext.getCause());
         }
-        if (authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
+        if (!authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
             throw new AccessDeniedException("User hasn\\'t permission");
         }
         User foundUser = AuthenticationContextHolder.getContext().getPrincipal();
@@ -84,10 +84,7 @@ public class MangaServiceImpl implements IMangaService {
 
     @Override
     public Long getNumberOfRecords(ERecordStatus status) {
-        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
-            status = ERecordStatus.ENABLED;
-        }
+        status = calculateRecordStatusByRole(status);
         if(status != ERecordStatus.IGNORE_STATUS){
             return mangaRepository.countByDisabled(status == ERecordStatus.DISABLED);
         }
@@ -105,5 +102,13 @@ public class MangaServiceImpl implements IMangaService {
         }
         manga.setAuthors(authors);
         manga.setGenres(genres);
+    }
+    @Override
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+            status = ERecordStatus.ENABLED;
+        }
+        return status;
     }
 }

@@ -1,5 +1,7 @@
 package com.bachtx.mangaservice.services.impl;
 
+import com.bachtx.mangaservice.contexts.AuthenticationContextHolder;
+import com.bachtx.mangaservice.contexts.models.AuthenticationContext;
 import com.bachtx.mangaservice.dtos.payloads.UpdateGenrePayload;
 import com.bachtx.mangaservice.dtos.response.GenreResponse;
 import com.bachtx.mangaservice.entities.Genre;
@@ -7,6 +9,7 @@ import com.bachtx.mangaservice.mappers.IGenreMapper;
 import com.bachtx.mangaservice.repositories.IGenreRepository;
 import com.bachtx.mangaservice.services.IGenreService;
 import com.bachtx.wibucommon.enums.ERecordStatus;
+import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
@@ -64,5 +67,13 @@ public class GenreServiceImpl implements IGenreService {
         genreToUpdate.setDisabled(isDeActive);
         Genre savedGenre = genreRepository.save(genreToUpdate);
         return genreMapper.genreToGenreResponse(savedGenre);
+    }
+    @Override
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
+        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+            status = ERecordStatus.ENABLED;
+        }
+        return status;
     }
 }

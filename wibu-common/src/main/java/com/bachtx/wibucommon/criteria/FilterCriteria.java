@@ -16,7 +16,7 @@ public class FilterCriteria {
     @JsonCreator
     public FilterCriteria(
             @JsonProperty("target") String target,
-            @JsonProperty("value") String value,
+            @JsonProperty("value") Object value,
             @JsonProperty("operation") String operation) {
         this.target = target;
         this.operation = EFilterOperation.valueOf(operation.toUpperCase());

@@ -1,6 +1,7 @@
 package com.bachtx.wibucommon.services;
 
 import com.bachtx.wibucommon.criteria.FilterCriteria;
+import com.bachtx.wibucommon.enums.EFilterOperation;
 import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.enums.ESortType;
 import com.bachtx.wibucommon.specifications.BaseFilterSpecification;
@@ -25,6 +26,7 @@ public interface IBaseCRUDService<Entity, Response, CreateRequest, UpdateRequest
     List<Response> getAll(Pageable pageable, Specification<Entity> filterSpecification);
     default List<Response> getAll(
             boolean isTakeTheWhole,
+            ERecordStatus status,
             Integer pageNumber,
             Integer pageSize,
             String sortBy,
@@ -39,16 +41,28 @@ public interface IBaseCRUDService<Entity, Response, CreateRequest, UpdateRequest
         }
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
         BaseFilterSpecification<Entity> filterSpecification = new BaseFilterSpecification<>();
-        try{
-            rawFilterRules = URLDecoder.decode(rawFilterRules, StandardCharsets.UTF_8);
-            ObjectMapper objectMapper = new ObjectMapper();
-            List<FilterCriteria> filterCriteriaList = objectMapper.readValue(rawFilterRules, new TypeReference<>() {});
-            filterCriteriaList.forEach(filterSpecification::add);
-        } catch (JsonProcessingException e) {
-            System.out.println(e.getMessage());
+        if(!rawFilterRules.isEmpty()){
+            try{
+                rawFilterRules = URLDecoder.decode(rawFilterRules, StandardCharsets.UTF_8);
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<FilterCriteria> filterCriteriaList = objectMapper.readValue(rawFilterRules, new TypeReference<>() {});
+                filterCriteriaList.forEach(filterSpecification::add);
+            } catch (JsonProcessingException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        status = this.calculateRecordStatusByRole(status);
+        if(status != ERecordStatus.IGNORE_STATUS){
+            filterSpecification.add(new FilterCriteria(
+                    "disabled",
+                    status == ERecordStatus.DISABLED,
+                    EFilterOperation.EQUAL.name()
+            ));
         }
 
         return this.getAll(pageable, filterSpecification);
     }
     Long getNumberOfRecords(ERecordStatus status);
+
+    ERecordStatus calculateRecordStatusByRole(ERecordStatus status);
 }
