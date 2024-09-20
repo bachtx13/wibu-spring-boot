@@ -30,7 +30,7 @@ public abstract class ACRUDRestController<
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     protected ResponseTemplate<Response> getById(
-            @PathVariable UUID id
+            @PathVariable("id") UUID id
     ) {
         return ResponseTemplate.<Response>builder()
                 .data(baseCRUDService.getById(id))
@@ -41,13 +41,13 @@ public abstract class ACRUDRestController<
 
     @RequestMapping(value = "get-all", method = RequestMethod.GET)
     protected ResponseTemplate<List<Response>> getAll(
-            @RequestParam(defaultValue = "false") boolean isTakeTheWhole,
-            @RequestParam(defaultValue = "1") Integer pageNumber,
-            @RequestParam(defaultValue = "10") Integer pageSize,
-            @RequestParam(defaultValue = "lastUpdated") String sortBy,
-            @RequestParam(defaultValue = "desc") ESortType sortType,
-            @RequestParam(defaultValue = "") String filterRules,
-            @RequestParam(defaultValue = "enabled") ERecordStatus status
+            @RequestParam(name = "isTakeTheWhole", defaultValue = "false") boolean isTakeTheWhole,
+            @RequestParam(name = "pageNumber",defaultValue = "1") Integer pageNumber,
+            @RequestParam(name = "pageSize",defaultValue = "10") Integer pageSize,
+            @RequestParam(name = "sortBy",defaultValue = "lastUpdated") String sortBy,
+            @RequestParam(name = "sortType",defaultValue = "desc") ESortType sortType,
+            @RequestParam(name = "filterRules",defaultValue = "") String filterRules,
+            @RequestParam(name = "status",defaultValue = "enabled") ERecordStatus status
     ) {
         return ResponseTemplate.<List<Response>>builder()
                 .meta(
