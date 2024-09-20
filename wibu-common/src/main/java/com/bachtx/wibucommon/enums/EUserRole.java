@@ -6,6 +6,9 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum EUserRole {
-    ROLE_ADMIN("ROLE_ADMIN"), ROLE_USER("ROLE_USER"), ROLE_ANONYMOUS("ROLE_ANONYMOUS");
+    ROLE_ADMIN("ROLE_ADMIN"),
+    ROLE_MANAGER("ROLE_MANAGER"),
+    ROLE_USER("ROLE_USER"),
+    ROLE_ANONYMOUS("ROLE_ANONYMOUS");
     private final String roleName;
 }

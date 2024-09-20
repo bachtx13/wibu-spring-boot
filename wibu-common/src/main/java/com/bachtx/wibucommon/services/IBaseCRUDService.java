@@ -7,6 +7,7 @@ import com.bachtx.wibucommon.enums.ESortType;
 import com.bachtx.wibucommon.specifications.BaseFilterSpecification;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -45,6 +46,7 @@ public interface IBaseCRUDService<Entity, Response, CreateRequest, UpdateRequest
             try{
                 rawFilterRules = URLDecoder.decode(rawFilterRules, StandardCharsets.UTF_8);
                 ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
                 List<FilterCriteria> filterCriteriaList = objectMapper.readValue(rawFilterRules, new TypeReference<>() {});
                 filterCriteriaList.forEach(filterSpecification::add);
             } catch (JsonProcessingException e) {
@@ -56,7 +58,7 @@ public interface IBaseCRUDService<Entity, Response, CreateRequest, UpdateRequest
             filterSpecification.add(new FilterCriteria(
                     "disabled",
                     status == ERecordStatus.DISABLED,
-                    EFilterOperation.EQUAL.name()
+                    EFilterOperation.EQUAL
             ));
         }
 

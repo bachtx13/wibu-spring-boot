@@ -103,6 +103,7 @@ public class MangaServiceImpl implements IMangaService {
         manga.setAuthors(authors);
         manga.setGenres(genres);
     }
+
     @Override
     public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
         AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
