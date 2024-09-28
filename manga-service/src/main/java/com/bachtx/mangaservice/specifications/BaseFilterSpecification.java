@@ -1,12 +1,13 @@
-package com.bachtx.wibucommon.specifications;
+package com.bachtx.mangaservice.specifications;
 
-import com.bachtx.wibucommon.criteria.FilterCriteria;
 import com.bachtx.wibucommon.enums.EFilterOperation;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.NonNull;
@@ -27,7 +28,6 @@ public class BaseFilterSpecification<Entity> implements Specification<Entity> {
     public Predicate toPredicate(@NonNull Root<Entity> root, @NonNull CriteriaQuery<?> query, @NonNull CriteriaBuilder builder) {
         List<Predicate> predicates = new ArrayList<>();
 
-        //add criteria to predicate
         for (FilterCriteria criteria : filterCriteriaList) {
             if (criteria.getOperation().equals(EFilterOperation.GREATER_THAN)) {
                 predicates.add(builder.greaterThan(
@@ -67,5 +67,15 @@ public class BaseFilterSpecification<Entity> implements Specification<Entity> {
         }
 
         return builder.and(predicates.toArray(new Predicate[0]));
+    }
+
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class FilterCriteria {
+        private String target;
+        private Object value;
+        private EFilterOperation operation;
     }
 }

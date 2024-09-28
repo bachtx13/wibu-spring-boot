@@ -46,9 +46,9 @@ public class GenreServiceImpl implements IGenreService {
 
     @Override
     public GenreResponse create(UpdateGenrePayload payload) {
-            Genre newGenre = genreMapper.updateGenrePayloadToGenre(payload);
-            Genre savedGenre = genreRepository.save(newGenre);
-            return genreMapper.genreToGenreResponse(savedGenre);
+        Genre newGenre = genreMapper.updateGenrePayloadToGenre(payload);
+        Genre savedGenre = genreRepository.save(newGenre);
+        return genreMapper.genreToGenreResponse(savedGenre);
     }
 
     @Override
@@ -61,17 +61,18 @@ public class GenreServiceImpl implements IGenreService {
     }
 
     @Override
-    public GenreResponse updateStatus(UUID id, boolean isDeActive) {
+    public GenreResponse updateStatus(UUID id, boolean isDisable) {
         Genre genreToUpdate = genreRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Genre not found"));
-        genreToUpdate.setDisabled(isDeActive);
+        genreToUpdate.setDisabled(isDisable);
         Genre savedGenre = genreRepository.save(genreToUpdate);
         return genreMapper.genreToGenreResponse(savedGenre);
     }
+
     @Override
-    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status) {
         AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+        if (status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
             status = ERecordStatus.ENABLED;
         }
         return status;

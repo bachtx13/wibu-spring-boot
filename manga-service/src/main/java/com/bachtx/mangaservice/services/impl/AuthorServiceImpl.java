@@ -45,9 +45,9 @@ public class AuthorServiceImpl implements IAuthorService {
 
     @Override
     public AuthorResponse create(UpdateAuthorPayload payload) {
-            Author newAuthor = authorMapper.updateAuthorPayloadToAuthor(payload);
-            Author savedAuthor = authorRepository.save(newAuthor);
-            return authorMapper.authorToAuthorResponse(savedAuthor);
+        Author newAuthor = authorMapper.updateAuthorPayloadToAuthor(payload);
+        Author savedAuthor = authorRepository.save(newAuthor);
+        return authorMapper.authorToAuthorResponse(savedAuthor);
     }
 
     @Override
@@ -60,17 +60,18 @@ public class AuthorServiceImpl implements IAuthorService {
     }
 
     @Override
-    public AuthorResponse updateStatus(UUID id, boolean isDeActive) {
+    public AuthorResponse updateStatus(UUID id, boolean isDisable) {
         Author authorToUpdate = authorRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Author not found"));
-        authorToUpdate.setDisabled(isDeActive);
+        authorToUpdate.setDisabled(isDisable);
         Author savedAuthor = authorRepository.save(authorToUpdate);
         return authorMapper.authorToAuthorResponse(savedAuthor);
     }
+
     @Override
-    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status) {
         AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+        if (status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
             status = ERecordStatus.ENABLED;
         }
         return status;

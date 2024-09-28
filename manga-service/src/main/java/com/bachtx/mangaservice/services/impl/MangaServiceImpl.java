@@ -74,10 +74,10 @@ public class MangaServiceImpl implements IMangaService {
     }
 
     @Override
-    public MangaResponse updateStatus(UUID id, boolean isDeActive) {
+    public MangaResponse updateStatus(UUID id, boolean isDisable) {
         Manga mangaToUpdate = mangaRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Manga not found"));
-        mangaToUpdate.setDisabled(isDeActive);
+        mangaToUpdate.setDisabled(isDisable);
         Manga savedManga = mangaRepository.save(mangaToUpdate);
         return mangaMapper.mangaToMangaResponse(savedManga);
     }
@@ -85,7 +85,7 @@ public class MangaServiceImpl implements IMangaService {
     @Override
     public Long getNumberOfRecords(ERecordStatus status) {
         status = calculateRecordStatusByRole(status);
-        if(status != ERecordStatus.IGNORE_STATUS){
+        if (status != ERecordStatus.IGNORE_STATUS) {
             return mangaRepository.countByDisabled(status == ERecordStatus.DISABLED);
         }
         return mangaRepository.count();
@@ -102,14 +102,5 @@ public class MangaServiceImpl implements IMangaService {
         }
         manga.setAuthors(authors);
         manga.setGenres(genres);
-    }
-
-    @Override
-    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
-        AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
-            status = ERecordStatus.ENABLED;
-        }
-        return status;
     }
 }

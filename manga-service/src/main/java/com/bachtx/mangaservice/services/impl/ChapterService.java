@@ -33,6 +33,7 @@ public class ChapterService implements IChapterService {
     private final IStoryPageRepository storyPageRepository;
     private final IChapterMapper chapterMapper = IChapterMapper.INSTANCE;
     private final IStoryPageMapper storyPageMapper = IStoryPageMapper.INSTANCE;
+
     @Override
     public ChapterResponse create(CreateChapterPayload payload) {
         Manga foundManga = mangaRepository.findById(payload.getMangaId())
@@ -60,10 +61,10 @@ public class ChapterService implements IChapterService {
     }
 
     @Override
-    public ChapterResponse updateStatus(UUID id, boolean isDeActive) {
+    public ChapterResponse updateStatus(UUID id, boolean isDisable) {
         Chapter chapterToUpdate = chapterRepository.findById(id)
                 .orElseThrow(() -> new RecordNotFoundException("Chapter not found"));
-        chapterToUpdate.setDisabled(isDeActive);
+        chapterToUpdate.setDisabled(isDisable);
         Chapter savedChapter = chapterRepository.save(chapterToUpdate);
         return chapterMapper.chapterToChapterResponse(savedChapter);
     }
@@ -84,10 +85,11 @@ public class ChapterService implements IChapterService {
     public Long getNumberOfRecords(ERecordStatus status) {
         return 0L;
     }
+
     @Override
-    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status){
+    public ERecordStatus calculateRecordStatusByRole(ERecordStatus status) {
         AuthenticationContext authenticationContext = AuthenticationContextHolder.getContext();
-        if(status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)){
+        if (status != ERecordStatus.ENABLED && authenticationContext.hasRole(EUserRole.ROLE_ADMIN)) {
             status = ERecordStatus.ENABLED;
         }
         return status;
