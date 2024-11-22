@@ -2,6 +2,7 @@ package com.bachtx.mangaservice.entities;
 
 import com.bachtx.wibucommon.entities.EntityTemplate;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.ManyToMany;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
@@ -18,7 +19,7 @@ import java.util.List;
 public class Author extends EntityTemplate {
     private String avatarUrl;
     private String name;
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(mappedBy = "authors", fetch = FetchType.LAZY)
     private List<Manga> mangas;
     private String description;
 }

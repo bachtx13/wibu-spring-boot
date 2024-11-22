@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 import java.util.List;
 
 @Entity
-@Table(uniqueConstraints = { @UniqueConstraint(columnNames = { "title" }) })
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"title"})})
 @Getter
 @Setter
 @AllArgsConstructor
@@ -22,6 +22,6 @@ public class Genre extends EntityTemplate {
     private String title;
     private String description;
     private String thumbnailUrl;
-    @ManyToMany(mappedBy = "genres")
+    @ManyToMany(mappedBy = "genres", fetch = FetchType.LAZY)
     private List<Manga> mangas;
 }

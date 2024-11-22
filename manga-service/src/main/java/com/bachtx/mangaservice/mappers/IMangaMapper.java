@@ -1,6 +1,7 @@
 package com.bachtx.mangaservice.mappers;
 
 import com.bachtx.mangaservice.dtos.payloads.UpdateMangaPayload;
+import com.bachtx.mangaservice.dtos.projections.MangaProjection;
 import com.bachtx.mangaservice.dtos.response.MangaResponse;
 import com.bachtx.mangaservice.entities.Manga;
 import org.mapstruct.*;
@@ -33,6 +34,9 @@ public interface IMangaMapper {
     @Mappings({})
     @IterableMapping(qualifiedByName = "mangaToMangaPreviewResponse")
     List<MangaResponse> listMangaToListMangaPreviewResponse(List<Manga> mangas);
+
+    @Mappings({})
+    List<MangaResponse> listMangaProjectionToListMangaPreviewResponse(List<MangaProjection> mangas);
 
     @Mappings({})
     Manga mangaResponseToManga(MangaResponse mangaResponse);

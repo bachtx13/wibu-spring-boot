@@ -14,6 +14,7 @@ import com.bachtx.mangaservice.repositories.IChapterRepository;
 import com.bachtx.mangaservice.repositories.IMangaRepository;
 import com.bachtx.mangaservice.repositories.IStoryPageRepository;
 import com.bachtx.mangaservice.services.IChapterService;
+import com.bachtx.mangaservice.specifications.BaseFilterSpecification;
 import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
@@ -79,6 +80,11 @@ public class ChapterService implements IChapterService {
     @Override
     public List<ChapterResponse> getAll(Pageable pageable, Specification<Chapter> specification) {
         return List.of();
+    }
+
+    @Override
+    public BaseFilterSpecification<Chapter> createFilterSpecification() {
+        return null;
     }
 
     @Override

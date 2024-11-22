@@ -8,6 +8,7 @@ import com.bachtx.mangaservice.entities.Author;
 import com.bachtx.mangaservice.mappers.IAuthorMapper;
 import com.bachtx.mangaservice.repositories.IAuthorRepository;
 import com.bachtx.mangaservice.services.IAuthorService;
+import com.bachtx.mangaservice.specifications.BaseFilterSpecification;
 import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
@@ -36,6 +37,11 @@ public class AuthorServiceImpl implements IAuthorService {
     public List<AuthorResponse> getAll(Pageable pageable, Specification<Author> specification) {
         List<Author> foundAuthors = authorRepository.findAll(specification, pageable).toList();
         return authorMapper.listAuthorToListAuthorResponse(foundAuthors);
+    }
+
+    @Override
+    public BaseFilterSpecification<Author> createFilterSpecification() {
+        return null;
     }
 
     @Override

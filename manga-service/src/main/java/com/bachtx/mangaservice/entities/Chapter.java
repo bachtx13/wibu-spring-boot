@@ -20,7 +20,7 @@ public class Chapter extends EntityTemplate {
     private Long views = 0L;
     @OneToMany(mappedBy = "chapter", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<StoryPage> pages;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "manga_id")
     private Manga manga;
 

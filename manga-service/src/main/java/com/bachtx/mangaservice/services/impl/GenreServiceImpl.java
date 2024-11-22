@@ -8,6 +8,7 @@ import com.bachtx.mangaservice.entities.Genre;
 import com.bachtx.mangaservice.mappers.IGenreMapper;
 import com.bachtx.mangaservice.repositories.IGenreRepository;
 import com.bachtx.mangaservice.services.IGenreService;
+import com.bachtx.mangaservice.specifications.BaseFilterSpecification;
 import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.RecordNotFoundException;
@@ -37,6 +38,11 @@ public class GenreServiceImpl implements IGenreService {
     public List<GenreResponse> getAll(Pageable pageable, Specification<Genre> filterSpecification) {
         List<Genre> foundGenres = genreRepository.findAll(filterSpecification, pageable).toList();
         return genreMapper.listGenreToListGenreResponse(foundGenres);
+    }
+
+    @Override
+    public BaseFilterSpecification<Genre> createFilterSpecification() {
+        return null;
     }
 
     @Override

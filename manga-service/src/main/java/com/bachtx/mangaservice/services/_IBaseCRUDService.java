@@ -11,6 +11,10 @@ import com.bachtx.wibucommon.enums.EUserRole;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -33,6 +37,8 @@ public interface _IBaseCRUDService<Entity, Response, CreateRequest, UpdateReques
 
     List<Response> getAll(Pageable pageable, Specification<Entity> filterSpecification);
 
+    BaseFilterSpecification<Entity> createFilterSpecification();
+
     default List<Response> getAll(
             ERecordStatus status,
             Integer pageNumber,
@@ -48,7 +54,15 @@ public interface _IBaseCRUDService<Entity, Response, CreateRequest, UpdateReques
             sort = sort.descending();
         }
         Pageable pageable = PageRequest.of(pageNumber - 1, pageSize, sort);
-        BaseFilterSpecification<Entity> filterSpecification = new BaseFilterSpecification<>();
+        BaseFilterSpecification<Entity> filterSpecification = createFilterSpecification();
+        if (filterSpecification == null) {
+            filterSpecification = new BaseFilterSpecification<>() {
+                @Override
+                protected boolean relationShipPredicateHandle(FilterCriteria criteria, List<Predicate> predicates, Root<Entity> root, CriteriaQuery<?> query, CriteriaBuilder builder) {
+                    return false;
+                }
+            };
+        }
         if (!rawFilterRules.isEmpty()) {
             rawFilterRules = URLDecoder.decode(rawFilterRules, StandardCharsets.UTF_8);
             Type collectionType = new TypeToken<List<FilterCriteria>>() {

@@ -3,6 +3,7 @@ package com.bachtx.mangaservice.services.impl;
 import com.bachtx.mangaservice.contexts.AuthenticationContextHolder;
 import com.bachtx.mangaservice.contexts.models.AuthenticationContext;
 import com.bachtx.mangaservice.dtos.payloads.UpdateMangaPayload;
+import com.bachtx.mangaservice.dtos.projections.MangaProjection;
 import com.bachtx.mangaservice.dtos.response.MangaResponse;
 import com.bachtx.mangaservice.entities.Author;
 import com.bachtx.mangaservice.entities.Genre;
@@ -13,6 +14,8 @@ import com.bachtx.mangaservice.repositories.IAuthorRepository;
 import com.bachtx.mangaservice.repositories.IGenreRepository;
 import com.bachtx.mangaservice.repositories.IMangaRepository;
 import com.bachtx.mangaservice.services.IMangaService;
+import com.bachtx.mangaservice.specifications.BaseFilterSpecification;
+import com.bachtx.mangaservice.specifications.MangaFilterSpecification;
 import com.bachtx.wibucommon.enums.ERecordStatus;
 import com.bachtx.wibucommon.enums.EUserRole;
 import com.bachtx.wibucommon.exceptions.AccessDeniedException;
@@ -42,8 +45,14 @@ public class MangaServiceImpl implements IMangaService {
 
     @Override
     public List<MangaResponse> getAll(Pageable pageable, Specification<Manga> specification) {
-        List<Manga> mangas = mangaRepository.findAll(specification, pageable).toList();
-        return mangaMapper.listMangaToListMangaPreviewResponse(mangas);
+        List<MangaProjection> mangaProjections = mangaRepository.findMangaPreviewProjections(specification, pageable).toList();
+//        List<Manga> mangas = mangaRepository.findAll(specification, pageable).toList();
+        return mangaMapper.listMangaProjectionToListMangaPreviewResponse(mangaProjections);
+    }
+
+    @Override
+    public BaseFilterSpecification<Manga> createFilterSpecification() {
+        return new MangaFilterSpecification();
     }
 
     @Override
